@@ -1,0 +1,22 @@
+{
+  "name": "trailmaster",
+  "version": "1.0.0",
+  "description": "trail master",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon --ignore client/ server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.9.15",
+    "dotenv": "^8.2.0",
+    "google-auth-library": "^5.8.0",
+    "graphql": "^14.5.8",
+    "mongoose": "^5.8.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
