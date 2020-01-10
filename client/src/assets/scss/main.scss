@@ -1,1 +1,14 @@
-@import "./variables/";
+@import "variables/grid";
+@import "variables/fonts";
+@import "variables/colors";
+@import "variables/backgrounds";
+@import "variables/breakpoints";
+@import "variables/transitions";
+@import "variables/borders";
+
+@import "tools/colors";
+@import "tools/clearfix";
+@import "tools/breakpoint";
+@import "tools/transitions";
+@import "tools/triangle";
+@import "tools/input-placeholder";

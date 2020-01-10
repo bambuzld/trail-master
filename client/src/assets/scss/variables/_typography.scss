@@ -1,4 +1,4 @@
-@import 'erpassets/scss/main';
+@import "../main.scss";
 
 h1,
 h2,
@@ -6,68 +6,68 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0 0 ($spacing * 3);
+  margin: 0 0 ($spacing * 3);
 }
 
 h1 {
-    font: $font-1;
+  font: $font-1;
 }
 
 .font-1 {
-    font: $font-1;
+  font: $font-1;
 }
 
 h2 {
-    font: $font-2;
+  font: $font-2;
 }
 
 .font-2 {
-    font: $font-2;
+  font: $font-2;
 }
 
 h3,
 .font-3 {
-    font: $font-3;
+  font: $font-3;
 }
 
 h4 {
-    font: $font-4;
+  font: $font-4;
 }
 
 .font-4 {
-    font: $font-4;
+  font: $font-4;
 }
 
 h5,
 h6,
 .font-5 {
-    font: $font-5;
+  font: $font-5;
 }
 
 .font-form {
-    font: $font-form;
+  font: $font-form;
 }
 
 .font-button {
-    font: $font-button;
+  font: $font-button;
 }
 
 .font-body {
-    font: $font-body;
+  font: $font-body;
 }
 
 .font-list {
-    font: $font-list;
+  font: $font-list;
 }
 
 .font-label {
-    font: $font-label;
+  font: $font-label;
 }
 
 .font-caption {
-    font: $font-caption;
+  font: $font-caption;
 }
 
 .color-brand {
-    color: getColor(redness);
+  color: getColor(redness);
 }

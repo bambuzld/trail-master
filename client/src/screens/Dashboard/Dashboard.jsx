@@ -1,7 +1,9 @@
 import React from "react";
+import "./Dashboard.scss";
+import Main from "components/Layout/Main";
 
 const Dashboard = () => {
-  return <div>ovo je dashboard</div>;
+  return <Main></Main>;
 };
 
 export default Dashboard;
