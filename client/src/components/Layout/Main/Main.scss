@@ -1,0 +1,26 @@
+@import "assets/scss/main";
+
+.main {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: stretch;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0px ($spacing * 9);
+
+  @include breakpoint(tablet) {
+    padding-top: $spacing * 7;
+    padding-left: $spacing * 3;
+    padding-right: $spacing * 3;
+  }
+
+  &--narrow {
+    > * {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}

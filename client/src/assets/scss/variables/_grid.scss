@@ -1,0 +1,16 @@
+//
+// Grid
+//
+// TODO: refactor grid variables
+$grid_content:          1200px;
+$grid_content_narrow:   864px;
+$grid_content_wider:    1400px;
+$grid_margin:           24px;
+$grid_padding:          24px;
+$grid_spacer:           24px;
+$grid_prefix:           "col-";
+$grid_uses_bem:         false;
+
+$component-margin: $grid_margin;
+
+$spacing: 8px;

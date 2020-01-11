@@ -1,0 +1,15 @@
+@function getTransitionEasing($transitionEasing: 'default') {
+    @if (map-has_key($transitions-easing, $transitionEasing)) {
+        @return map-get($transitions-easing, $transitionEasing);
+    } @else {
+        @return map-get($transitions-easing, 'default');
+    }
+}
+
+@function getTransition($transitionName: 'default', $transitionEasing: getTransitionEasing()) {
+    @if (map-has_key($transitions, $transitionName)) {
+        @return map-get($transitions, $transitionName) getTransitionEasing($transitionEasing);
+    } @else {
+        @return map-get($transitions, 'default') getTransitionEasing($transitionEasing);
+    }
+}
