@@ -9,7 +9,6 @@ const Dashboard = () => {
     <div className="dashboard">
       <Header />
       <PageContent>
-        {/* <div className="dashboard">dashboar</div> */}
       </PageContent>
     </div>
   );

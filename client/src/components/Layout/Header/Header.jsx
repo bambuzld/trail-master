@@ -14,7 +14,9 @@ const Header = () => {
           <li>Profile</li>
           <li>All Trails</li>
         </ul>
+        <button className="header__sign-in-button">
         <span className="header__sign-in">Sign in</span>
+        </button>
       </div>
     </nav>
   );
