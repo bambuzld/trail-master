@@ -1,8 +1,8 @@
 const User = require('../models/User')
-const {OAuthClient} = require('google-auth-library')
+const {OAuth2Client} = require('google-auth-library')
 require("dotenv").config();
 
-const client = new OAuthClient(process.env.OAUTH_CLIENT_ID)
+const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID)
 
 
 exports.findOrCreateUser = async token => {

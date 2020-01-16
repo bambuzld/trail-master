@@ -5,6 +5,9 @@ require("dotenv").config();
 const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
 
+const { findOrCreateUser } = require("./controllers/userController");
+
+
 //connect to mongo db
 
 mongoose
