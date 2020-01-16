@@ -1,14 +1,14 @@
 @import "assets/scss/main";
 
 .main {
-  width: 100%;
+  max-width: 1300px;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
   align-content: stretch;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0px ($spacing * 9);
+  // padding: 0px ($spacing * 9);
 
   @include breakpoint(tablet) {
     padding-top: $spacing * 7;

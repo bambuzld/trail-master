@@ -2,7 +2,6 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 //Routes
-
 import Dashboard from "../../screens/Dashboard";
 
 //initial redirect
