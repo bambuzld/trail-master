@@ -1,11 +1,10 @@
-import React from "react";
+import React  from "react";
 import "./Dashboard.scss";
-import Main from "components/Layout/Main";
 import Header from "components/Layout/Header";
 import PageContent from "components/Layout/PageContent";
 
 const Dashboard = () => {
-  return (
+   return (
     <div className="dashboard">
       <Header />
       <PageContent>
