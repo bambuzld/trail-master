@@ -9,14 +9,14 @@ import RouterManager from "./utils/RouterManager";
 import Context from "containers/mainContext";
 import reducer from "containers/User/User.reducer";
 
+import MainProvider from 'containers/mainContext'
+
 const Root = () => {
-  const initialState = useContext(Context);
-  const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <Router>
-      <Context.Provider value={{ state, dispatch }}>
+      <MainProvider>
         <RouterManager />
-      </Context.Provider>
+      </MainProvider>
     </Router>
   );
 };

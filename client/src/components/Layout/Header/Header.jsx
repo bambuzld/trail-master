@@ -5,25 +5,34 @@ import logo from "assets/images/logo.svg";
 import { GoogleLogin } from "react-google-login";
 import { GraphQLClient } from "graphql-request";
 
-import Context from "containers/mainContext";
+import {MainContext} from "containers/mainContext";
 import { ME_QUERY } from "graphql/queries";
+
+import {set} from 'utils/localStorage'
+
 
 
 const Header = () => {
-  const { dispatch } = useContext(Context);
+  const { dispatch } = useContext(MainContext);
+  console.log('dispatch', dispatch);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
   const onSuccess = async googleUser => {
     try {
         const idToken = googleUser.getAuthResponse().id_token
         const client = new GraphQLClient("http://localhost:4000/graphql",{headers: {authorization: idToken}})
+        console.log('client', client);
         const me = await client.request(ME_QUERY)
+        console.log('me', me);
         dispatch({ type: "LOGIN_USER", payload: me });
         dispatch({ type: "IS_LOGGED_IN", payload: googleUser.isSignedIn() });
+        set('currentUser',me)
+
   
     } catch (error) {
       console.error(error)
     }
   };
+
   return (
     <nav className="header">
       <div className="header__logo">
@@ -39,7 +48,7 @@ const Header = () => {
           clientId="325129789199-aeblq0vopuh6dc62sen30c3q6mqli0kq.apps.googleusercontent.com"
           buttonText="Sign in"
           onSuccess={onSuccess}
-          onFailure={() => console.log("btj nece")}
+          onFailure={(error) => console.error(error)}
           render={props => (
             <button className="header__sign-in-button" onClick={props.onClick}>
               <span className="header__sign-in">Sign in</span>

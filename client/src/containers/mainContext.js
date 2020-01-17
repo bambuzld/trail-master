@@ -1,11 +1,40 @@
-import { createContext } from "react";
+import React,{ createContext, useReducer } from "react";
 
 import userContext from 'containers/User/User.context'
-console.log('userContext', userContext);
+import UserReducer, {key as userKey} from 'containers/User/User.reducer'
+import combineReducer from 'utils/combineReducer'
 
 
-const Context = createContext({
-  ...userContext
-});
 
-export default Context;
+
+
+export const MainContext = createContext()
+
+const MainProvider = ({children}) => {
+  const initialValue = {
+    [userKey]:userContext
+  }
+  const rootReducer = combineReducer({
+    [userKey]: UserReducer
+  })
+  const [state,dispatch] = useReducer(rootReducer,initialValue)
+  console.log('state', state);
+
+  const initialState = {
+    dispatch,
+    [userKey]:{
+      ...state[userKey]
+    }
+  }
+
+  return (
+    <MainContext.Provider value={initialState}>
+      {children}
+    </MainContext.Provider>
+  )
+}
+
+
+
+
+export default MainProvider;

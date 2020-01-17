@@ -1,0 +1,17 @@
+@import 'assets/scss/main';
+
+.floating-notifications {
+    position: fixed;
+    display: block;
+    left: $spacing*2;
+    bottom: $spacing*2;
+    width: 100%;
+    max-width: 280px;
+    z-index: 99999;
+    border: 5px solid red;
+
+    &:empty,
+    &--empty {
+        pointer-events: none;
+    }
+}

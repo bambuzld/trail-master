@@ -1,3 +1,4 @@
+
 export const actions = {
     "LOGIN_USER": "LOGIN_USER",
     "IS_LOGGED_IN": "IS_LOGGED_IN",
@@ -6,6 +7,9 @@ export const actions = {
 
 
 export default function reducer(state, { type, payload }) {
+  console.log('type', type);
+  console.log('payload', payload);
+  console.log('oghogohohooh')
     switch (type) {
       case "LOGIN_USER":
         return {
@@ -29,3 +33,5 @@ export default function reducer(state, { type, payload }) {
     }
   }
   
+
+export const key="user"
