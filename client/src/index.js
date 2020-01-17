@@ -1,13 +1,10 @@
-import React, { useContext, useReducer } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./assets/scss/font/Poppins/Poppins-Regular.ttf";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import RouterManager from "./utils/RouterManager";
-
-import Context from "containers/mainContext";
-import reducer from "containers/User/User.reducer";
 
 import MainProvider from 'containers/mainContext'
 

@@ -7,9 +7,6 @@ export const actions = {
 
 
 export default function reducer(state, { type, payload }) {
-  console.log('type', type);
-  console.log('payload', payload);
-  console.log('oghogohohooh')
     switch (type) {
       case "LOGIN_USER":
         return {

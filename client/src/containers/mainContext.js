@@ -18,7 +18,6 @@ const MainProvider = ({children}) => {
     [userKey]: UserReducer
   })
   const [state,dispatch] = useReducer(rootReducer,initialValue)
-  console.log('state', state);
 
   const initialState = {
     dispatch,

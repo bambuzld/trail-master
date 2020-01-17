@@ -14,15 +14,12 @@ import {set} from 'utils/localStorage'
 
 const Header = () => {
   const { dispatch } = useContext(MainContext);
-  console.log('dispatch', dispatch);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
   const onSuccess = async googleUser => {
     try {
         const idToken = googleUser.getAuthResponse().id_token
         const client = new GraphQLClient("http://localhost:4000/graphql",{headers: {authorization: idToken}})
-        console.log('client', client);
         const me = await client.request(ME_QUERY)
-        console.log('me', me);
         dispatch({ type: "LOGIN_USER", payload: me });
         dispatch({ type: "IS_LOGGED_IN", payload: googleUser.isSignedIn() });
         set('currentUser',me)
