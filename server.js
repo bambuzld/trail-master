@@ -18,6 +18,8 @@ mongoose
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  // introspection: true,
+  // playground: true // za playground ukljucit na produkciji
   context: async ({ req }) => {
     let authToken = null;
     let currentUser = null;

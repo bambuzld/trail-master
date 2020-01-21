@@ -4,7 +4,11 @@
     $this: &;
     width: 100%;
     display: block;
-    padding: 0 0 ($spacing * 3) 0;
+    // padding: 0 0 ($spacing * 3) 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &__column {
         display: flex;

@@ -13,8 +13,11 @@
 @import "tools/triangle";
 @import "tools/input-placeholder";
 
-*{
-    box-sizing: border-box;
-    padding: 0;
-    marging: 0;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  marging: 0;
+  &:focus {
+    outline: none;
+  }
 }
