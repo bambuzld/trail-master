@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import gps from "assets/images/gps_orange.svg";
+import Svg from 'components/Svg'
 
 import ElementLoader from 'components/ElementLoader'
 
@@ -39,9 +40,9 @@ const LocationAutocomplete = () => {
           {loading ? (
             <ElementLoader />
           ) : (
-            <div className="location-autocomplete__location-icon">
-              <img src={gps} />
-            </div>
+           
+              <Svg className="location-autocomplete__location-icon" icon="gps"/>
+            
           )}
 
           <div className="location-autocomplete__suggestions">

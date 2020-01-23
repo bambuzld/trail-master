@@ -15,7 +15,6 @@ const Dashboard = () => {
 
       <div className="dashboard__subtitle">
         <span>Explore the trails nearby...</span>
-        <Svg icon="gps"/>
       </div>
 
 

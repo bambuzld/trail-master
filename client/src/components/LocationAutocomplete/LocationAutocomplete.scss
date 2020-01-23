@@ -1,35 +1,31 @@
 @import 'assets/scss/main';
 
 .location-autocomplete {
-    width: 40rem;
-    height: 4rem;
+  width: 40rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 2rem;
+  padding: $spacing * 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    flex: 1;
+    border: 0px solid;
+    font: $font-2;
+  }
+  &__location-icon {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+  &__suggestions {
     background-color: white;
-    border-radius: 2rem;
-    padding: $spacing * 4;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    input {
-        flex: 1;
-        border: 0px solid;
-        font: $font-2;
-  }
-  &__location-icon{
-      flex: 0;
-      margin-top: 5px;
-      img {
-          width: 30px;
-          height: 30px;
-          transition: all .2s ease-in-out;
-          &:hover{
-              transform: scale(1.2);
-          }
-      }
-  }
-  &__suggestions{
-      background-color: white;
-      max-height:30vh ;
-      margin-top: -1.9rem;
-      
+    max-height: 30vh;
+    margin-top: -1.9rem;
   }
 }

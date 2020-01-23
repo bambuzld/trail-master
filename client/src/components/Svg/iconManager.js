@@ -1,4 +1,4 @@
-import gps from 'assets/images/gps.svg'
+import gps from 'assets/images/gps_orange.svg'
 
 
 export default {
