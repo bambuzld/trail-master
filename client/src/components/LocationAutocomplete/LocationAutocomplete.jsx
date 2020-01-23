@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import {TraceSpinner} from 'react-spinners-kit'
+import gps from "assets/images/gps_orange.svg";
+
+import ElementLoader from 'components/ElementLoader'
+
 
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -31,13 +34,26 @@ const LocationAutocomplete = () => {
       onSelect={handleChange}
     >
       {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
-        <div className="location-autocomplete" >
-          <input {...getInputProps({ placeholder: "type me baby" })} />
-          {loading && <div className="location-autocomplete__spinner" ><TraceSpinner size={25} frontColor="#A7A7A7" backColor="#EB6B2A"/></div>}
-          <div className="location-autocomplete__suggestions">{
-              suggestions.map(suggestion=><div className="location-autocomplete__suggestions__suggestion" {...getSuggestionItemProps(suggestion,{style})}>{console.log('suggestion', suggestion)}</div>)
-              
-          }</div>
+        <div className="location-autocomplete">
+          <input {...getInputProps({ placeholder: 'type me baby' })} />
+          {loading ? (
+            <ElementLoader />
+          ) : (
+            <div className="location-autocomplete__location-icon">
+              <img src={gps} />
+            </div>
+          )}
+
+          <div className="location-autocomplete__suggestions">
+            {suggestions.map(suggestion => (
+              <div
+                className="location-autocomplete__suggestions__suggestion"
+                {...getSuggestionItemProps(suggestion, { style })}
+              >
+                {console.log('suggestion', suggestion)}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </PlacesAutocomplete>

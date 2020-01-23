@@ -14,9 +14,17 @@
         border: 0px solid;
         font: $font-2;
   }
-  &__spinner{
+  &__location-icon{
       flex: 0;
       margin-top: 5px;
+      img {
+          width: 30px;
+          height: 30px;
+          transition: all .2s ease-in-out;
+          &:hover{
+              transform: scale(1.2);
+          }
+      }
   }
   &__suggestions{
       background-color: white;

@@ -1,0 +1,12 @@
+@import 'assets/scss/main';
+
+.svg {
+    display: inline-block;
+    width: $spacing * 2;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}

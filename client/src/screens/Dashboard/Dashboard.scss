@@ -1,6 +1,14 @@
+@import "assets/scss/main";
+
 .dashboard {
   background: url("../../assets/images/background.png") no-repeat center;
   height: 100vh;
   background-size: cover;
+
+  &__subtitle{
+    margin-bottom: $spacing * 3;
+    font: $font-2;
+    color: getColor(brand-orange)
+  }
   // padding: 20px;
 }
