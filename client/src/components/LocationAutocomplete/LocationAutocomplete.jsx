@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import gps from "assets/images/gps_orange.svg";
 import Svg from 'components/Svg'
 
 import ElementLoader from 'components/ElementLoader'
@@ -35,27 +34,35 @@ const LocationAutocomplete = () => {
       onSelect={handleChange}
     >
       {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
-        <div className="location-autocomplete">
-          <input {...getInputProps({ placeholder: 'type me baby' })} />
-          {loading ? (
-            <ElementLoader />
-          ) : (
-           
-              <Svg className="location-autocomplete__location-icon" icon="gps"/>
-            
-          )}
-
+        <>
+          <div className="location-autocomplete">
+            <input {...getInputProps({ placeholder: 'type me baby' })} />
+            {loading ? (
+              <ElementLoader />
+            ) : (
+              <Svg
+                className="location-autocomplete__location-icon"
+                icon="gps"
+              />
+            )}
+          </div>
+          {/* <div className="location-autocomplete__suggestions">
+            <div className="location-autocomplete__suggestions__suggestion">suggestion 1</div>
+            <div className="location-autocomplete__suggestions__suggestion">suggestion 1</div>
+            <div className="location-autocomplete__suggestions__suggestion">suggestion 1</div>
+            <div className="location-autocomplete__suggestions__suggestion">suggestion 1</div>
+          </div> */}
           <div className="location-autocomplete__suggestions">
             {suggestions.map(suggestion => (
               <div
                 className="location-autocomplete__suggestions__suggestion"
-                {...getSuggestionItemProps(suggestion, { style })}
+                // {...getSuggestionItemProps(suggestion, { style })}
               >
-                {console.log('suggestion', suggestion)}
+                {suggestion.description}
               </div>
             ))}
           </div>
-        </div>
+        </>
       )}
     </PlacesAutocomplete>
   );
