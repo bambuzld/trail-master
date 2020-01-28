@@ -14,24 +14,45 @@
     border: 0px solid;
     font: $font-2;
   }
+  &__suggestions-opened {
+    width: 40rem;
+    height: 4rem;
+    background-color: white;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: $spacing * 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input {
+      flex: 1;
+      border: 0px solid;
+      font: $font-2;
+    }
+  }
   &__location-icon {
-    margin-top: 5px;
+    margin-top: 2px;
     width: 30px;
     height: 30px;
     transition: all 0.2s ease-in-out;
     &:hover {
       transform: scale(1.2);
     }
+    cursor: pointer;
   }
   &__suggestions {
     background-color: white;
     // max-height: 30vh;
     margin-top: 0rem;
-    width: 36rem;
+    width: 40rem;
     border-radius: 2rem;
     // padding: 0 $spacing * 4;
 
     &__suggestion {
+      opacity: 1;
+      transition: opacity 2000ms ease-in;
       background: white;
       color: black;
       width: 100%;
@@ -42,11 +63,17 @@
       &:hover {
         background-color: getColor(lighter-grey);
       }
-      &:last-child{
-        margin-bottom: $spacing;
+      &:focus {
+        background-color: getColor(lighter-grey);
+      }
+      &:last-child {
+        margin-bottom: $spacing * 2;
         border-radius: 0 0 2rem 2rem;
       }
-
     }
   }
+}
+
+.animate {
+  transition: step-start 1s ease-in;
 }

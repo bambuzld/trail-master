@@ -6,7 +6,7 @@ import './Svg.scss'
 
 const Svg = ({icon,className}) => {
     if (icon && icon !== '')
-        return <SVG className={`svg ${className}`} src={icons[icon]} cacheGetRequests />;
+        return <SVG className={`svg ${className}`} src={icons[icon]} cacheGetRequests/>;
     return null;
 }
 
