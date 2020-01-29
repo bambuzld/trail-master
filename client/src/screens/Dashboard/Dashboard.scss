@@ -5,6 +5,16 @@
   height: 100vh;
   background-size: cover;
 
+  &__title{
+    font: $font-hero;
+    letter-spacing: $spacing / 2;
+    color: white;
+    padding: $spacing * 1.5;
+    min-width: 330px;
+    display: flex;
+    justify-content: center;
+  }
+
   &__subtitle{
     margin-bottom: $spacing * 3;
     font: $font-2;

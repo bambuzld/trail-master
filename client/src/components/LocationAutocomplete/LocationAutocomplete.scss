@@ -1,7 +1,7 @@
 @import 'assets/scss/main';
 
 .location-autocomplete {
-  width: 40rem;
+  width: 35rem;
   height: 4rem;
   background-color: white;
   border-radius: 2rem;
@@ -15,7 +15,7 @@
     font: $font-2;
   }
   &__suggestions-opened {
-    width: 40rem;
+    width: 35rem;
     height: 4rem;
     background-color: white;
     border-top-left-radius: 2rem;
@@ -46,7 +46,7 @@
     background-color: white;
     // max-height: 30vh;
     margin-top: 0rem;
-    width: 40rem;
+    width: 35rem;
     border-radius: 2rem;
     // padding: 0 $spacing * 4;
 

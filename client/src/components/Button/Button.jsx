@@ -1,153 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import './Button.scss'
+import propTypes from 'prop-types'
 
-import './Button.scss';
 
-const renderButton = ({
-  href,
-  external,
-  onClick,
-  label,
-  disabled,
-  submit,
-  className,
-  externalTarget
-}) => {
-  if (href && href !== '') {
-    if (external) {
-      return (
-        <a
-          href={href}
-          target={externalTarget || undefined}
-          rel="noopener noreferrer"
-          //   aria-label={ariaLabel}
-          className={className || ''}
-          // ref={this.button}
-          onClick={onClick}
-        >
-          {this.handleIcon()}
-        </a>
-      );
-    }
+const  Button = ({size,variant, label, onClick}) => {
+  const [buttonSize] = useState(size);
+  const [buttonVariant] = useState(variant);
+  return (
+    <button
+      className={`button ${buttonVariant} ${buttonSize}`}
+      onClick={onClick}
+    >
+      {label}
+    </button>
+  );
+}
 
-    return (
-      <Link
-        to={href}
-        // aria-label={ariaLabel}
-        className={className || ''}
-        // ref={this.button}
-        onClick={onClick}
-      >
-        {label}
-      </Link>
-    );
-  }
-  if (submit) {
-    return (
-      <button
-        type="submit"
-        // aria-label={ariaLabel}
-        className={className || ''}
-        disabled={disabled}
-        ref={this.button}
-        onClick={onClick}
-      >
-        {label}
-      </button>
-    );
-  }
-};
-
-const Button = ({
-  size,
-  color,
-  variation,
-  href,
-  external,
-  externalTarget,
-  loading,
-  label,
-  onClick,
-  className,
-  disabled,
-  submit
-}) => {
-  //set class
-  const [clx, setClx] = useState('button');
-  useEffect(() => {
-    setClx(`button ${className}`);
-
-    if (variation && variation === 'secondary') {
-      setClx(`${clx} button--secondary `);
-    }
-
-    if (variation && variation === 'tertiary') {
-      setClx(`${clx} button--tertiary `);
-    }
-
-    if (size && size === 'small') {
-      setClx(`${clx} button--small`);
-    }
-    if (disabled) {
-      setClx(`${clx} button--disabled`);
-    }
-  }, [
-    size,
-    color,
-    variation,
-    href,
-    external,
-    externalTarget,
-    loading,
-    label,
-    onClick,
-    className,
-    disabled,
-    submit
-  ]);
-
-  if (loading === true) {
-    return <p>...loading</p>;
-  }
-  return renderButton({
-    href,
-    external,
-    onClick,
-    label,
-    disabled,
-    submit,
-    clx,
-    externalTarget
-  });
-};
 
 Button.defaultProps = {
   size: '',
-  color: '',
-  variation: '',
-  href: '',
-  external: false,
-  externalTarget: '',
-  loading: false,
+  variant: 'primary',
+  children: {},
   label: '',
-  onClick: () => {},
-  submit: false,
-  disabled: false
-};
+  onClick: () => {}
+}
 
-Button.PropTypes = {
-  size: PropTypes.string,
-  color: PropTypes.string,
-  variation: PropTypes.oneOfType([PropTypes.string]),
-  href: PropTypes.string,
-  externalTarget: PropTypes.string,
-  external: PropTypes.bool,
-  loading: PropTypes.bool,
-  label: PropTypes.string,
-  onClick: PropTypes.func,
-  submit: PropTypes.bool,
-  disabled: PropTypes.bool
+Button.propTypes = {
+  size: propTypes.string,
+  variant: propTypes.string,
+  children: propTypes.node,
+  label: propTypes.string,
+  onClick: propTypes.func
 };
 
 export default Button;

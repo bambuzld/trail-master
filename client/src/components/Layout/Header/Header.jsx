@@ -1,6 +1,7 @@
 import React,{useContext} from "react";
 import "./Header.scss";
 import logo from "assets/images/logo.svg";
+import Button  from 'components/Button'
 
 import { GoogleLogin } from "react-google-login";
 import { GraphQLClient } from "graphql-request";
@@ -12,10 +13,11 @@ import {set} from 'utils/localStorage'
 
 
 
-const Header = () => {
+const Header = ({hasTitle}) => {
   const { dispatch } = useContext(MainContext);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
   const onSuccess = async googleUser => {
+    console.log('click')
     try {
         const idToken = googleUser.getAuthResponse().id_token
         const client = new GraphQLClient("http://localhost:4000/graphql",{headers: {authorization: idToken}})
@@ -35,7 +37,7 @@ const Header = () => {
       <div className="header__logo">
         <img src={logo} alt="trail master" title="trail master" />
       </div>
-      <div className="header__title">TRAIL MASTER</div>
+      {hasTitle ? <div className="header__title">TRAIL MASTER</div> : <div className="header__title-mock"/>}
       <div className="header__right-container">
         <ul>
           <li>Profile</li>
@@ -47,9 +49,7 @@ const Header = () => {
           onSuccess={onSuccess}
           onFailure={(error) => console.error(error)}
           render={props => (
-            <button className="header__sign-in-button" onClick={props.onClick}>
-              <span className="header__sign-in">Sign in</span>
-            </button>
+           <Button label="Sign in" onClick={props.onClick}/>
           )}
         />
       </div>

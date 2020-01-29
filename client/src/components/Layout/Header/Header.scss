@@ -7,7 +7,7 @@
   position: absolute;
   justify-content: space-between;
   align-items: center;
-  padding: 0 $spacing * 4;
+  padding: 0 $spacing * 8;
 
   &__logo {
     flex: 1;
@@ -24,6 +24,18 @@
     color: white;
     flex: 1;
     background-color: rgba($color: #ffffff, $alpha: 0.2);
+    padding: $spacing * 1.5;
+    min-width: 330px;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  &__title-mock {
+    font: $font-1;
+    letter-spacing: $spacing / 2;
+    color: white;
+    flex: 1;
+    // background-color: rgba($color: #ffffff, $alpha: 0.2);
     padding: $spacing * 1.5;
     min-width: 330px;
     display: flex;
