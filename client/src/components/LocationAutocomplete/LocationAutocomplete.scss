@@ -33,12 +33,12 @@
     }
   }
   &__location-icon {
-    margin-top: 2px;
+    margin-top: 7px;
     width: 30px;
     height: 30px;
     transition: all 0.2s ease-in-out;
     &:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
     cursor: pointer;
   }

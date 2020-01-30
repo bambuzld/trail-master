@@ -1,45 +1,52 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Svg from 'components/Svg';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useFetch , useFocus, usePosition} from 'utils/Hooks';
 import Transition from 'react-transition-group/Transition';
 
-import {KeyCodes} from 'constants/keyCodes'
+import { KeyCodes } from 'constants/keyCodes';
+import { useFetch, useFocus, usePosition } from 'utils/Hooks';
 
+import Svg from 'components/Svg';
 import ElementLoader from 'components/ElementLoader';
 
 import './LocationAutocomplete.scss';
-
-const acces_token =
-'pk.eyJ1IjoiaXZvc2lza28iLCJhIjoiY2s1d3U4bThrMWlpZzNubG90cHU0aWxlaCJ9.YD76pxTHCas9GFDFsYv0dw';
 
 //TODO: Code quality, code split & cleanup
 //TODO: x icon to clear the location text input
 
 const LocationAutocomplete = () => {
-  const suggestionsRef = useRef(null);
-  const inputRef = useRef(null);
   const [suggestions, setSuggestions] = useState([]);
+  console.log('suggestions', suggestions);
   const [loading, setLoading] = useState(false);
   const [inside, setInside] = useState(false);
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
-  const [suggestionRef, setFocus] = useFocus();
   const [val, setVal] = useState('');
 
+  const [suggestionRef, setFocus] = useFocus();
+  // const [activeSuggestionRef, setActiveSuggestionFocus] = useFocus();
+  const inputRef = useRef(null);
+  const suggestionsRef = useRef(null);
+  const { latitude, longitude, error } = usePosition(true);
+  const [chosenIndex,setChosenIndex] = useState(null)
+  console.log('render')
   useEffect(() => {
-    handleFocusChange();   
-    if(inputRef){
-      inputRef.current.focus()
-    }// change location using arrow keys  
+    handleFocusChange()
+    if (inputRef) {
+      inputRef.current.focus();
+    } 
+    if(chosenIndex){
+      setVal(suggestions[chosenIndex].place_name)
+    }
     document.addEventListener('click', handleClickOutside, false);
     return () => {
       document.removeEventListener('click', handleClickOutside, false);
     };
-  }, []);
+  }, [chosenIndex]);
 
+
+  //input handlers
   const handleClickOutside = event => {
-    setInside(false)
-    
+    setInside(false);
+
     if (
       suggestionsRef.current &&
       !suggestionsRef.current.contains(event.target)
@@ -48,16 +55,28 @@ const LocationAutocomplete = () => {
     }
   };
 
-  const handleEscapeKey = e => {
+  const handleEscapeOrEnterKey = (e,index) => {
     if (e.keyCode === KeyCodes.ESCAPE) {
       setSuggestions([]);
-      setVal('')
+      setVal('');
     }
+    // if (e.keyCode === KeyCodes.ENTER) {
+    //   const latlng = {
+    //     lng: suggestions[0].center[0],
+    //     lat: suggestions[0].center[1]
+    //   };
+    //   setCoordinates(latlng);
+    //   setVal(suggestions[0].place_name);
+    //   setSuggestions([])
+
+    //   //TODO: handle choosing selected element from the list when pressing enter, currently it only works if user press enter while inside the input
+    // }
   };
 
+
   const handleFocusFirstSuggestion = e => {
-    if (e.keyCode === KeyCodes.ARROW_DOWN && inside===false) {
-      setInside(true)
+    if (e.keyCode === KeyCodes.ARROW_DOWN && inside === false) {
+      setInside(true);
       setFocus();
     }
   };
@@ -65,15 +84,27 @@ const LocationAutocomplete = () => {
   const handleFocusChange = () => {
     if (suggestionsRef !== null) {
       suggestionsRef.current.addEventListener('keydown', e => {
-        const active = document.activeElement;
+        let active = document.activeElement;
         if (e.keyCode === KeyCodes.ARROW_DOWN && active.nextSibling) {
           active.nextSibling.focus();
         }
         if (e.keyCode === KeyCodes.ARROW_UP && active.previousSibling) {
           active.previousSibling.focus();
         }
+        if (e.keyCode === KeyCodes.ENTER) {
+          const suggestionIndex = parseInt(active.getAttribute('data-key'), 10);
+          console.log('suggestionIndex', suggestionIndex);
+          setChosenIndex(suggestionIndex)
+          // setVal(suggestions[parseInt(suggestionIndex,10)] &&suggestions[parseInt(suggestionIndex,10)].place_name)
+        }
+        active = document.activeElement;
       });
     }
+  }
+
+
+  const handleClearAll = () => {
+    setVal('');
   };
 
   const handleChange = async value => {
@@ -81,7 +112,7 @@ const LocationAutocomplete = () => {
     const searchString = value.target.value;
     try {
       const results = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchString}.json?access_token=pk.eyJ1IjoiaXZvc2lza28iLCJhIjoiY2s1d3U4bThrMWlpZzNubG90cHU0aWxlaCJ9.YD76pxTHCas9GFDFsYv0dw`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchString}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`
       );
       console.log('result', results);
       setSuggestions(results.data.features);
@@ -92,20 +123,18 @@ const LocationAutocomplete = () => {
     // setCoordinates(latLng);
   };
 
-  const handleClearAll = () => {
-    setVal('');
-  };
-
   const handleLocation = index => {
+    console.log('index', index);
     const chosenLocation = suggestions[index];
     setCoordinates({
       lat: chosenLocation.center[0],
       lng: chosenLocation.center[1]
     });
   };
-  const { latitude, longitude, error } = usePosition(true);
 
-  const handleUserLocation = () => {};
+  const handleUserLocation = () => {
+    setCoordinates({ lat: latitude, lng: longitude });
+  };
 
   return (
     <>
@@ -120,16 +149,14 @@ const LocationAutocomplete = () => {
           onChange={handleChange}
           value={val}
           ref={inputRef}
-          onKeyDown={handleEscapeKey}
+          onKeyDown={handleEscapeOrEnterKey}
         />
         {loading ? (
           <ElementLoader />
         ) : val === '' ? (
-          <Svg
-            className="location-autocomplete__location-icon"
-            icon="gps"
-            onClick={() => handleUserLocation}
-          />
+          <span onClick={handleUserLocation}>
+            <Svg className="location-autocomplete__location-icon" icon="gps" />
+          </span>
         ) : (
           <span onClick={handleClearAll}>
             <Svg
@@ -153,9 +180,10 @@ const LocationAutocomplete = () => {
                 onClick={() => handleLocation(index)}
                 data-key={index}
                 tabIndex={index}
-                ref={index === 0 && suggestionRef}
-                onKeyDown={handleEscapeKey}
+                ref={index === 0 && suggestionRef }
+                onKeyDown={e=>handleEscapeOrEnterKey(e,index)}
               >
+              {console.log('index', index)}
                 {suggestion.place_name}
               </div>
             ))}
@@ -165,6 +193,5 @@ const LocationAutocomplete = () => {
     </>
   );
 };
-
 
 export default LocationAutocomplete;
