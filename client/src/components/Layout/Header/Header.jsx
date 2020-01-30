@@ -2,6 +2,7 @@ import React,{useContext} from "react";
 import "./Header.scss";
 import logo from "assets/images/logo.svg";
 import Button  from 'components/Button'
+import Svg  from 'components/Svg'
 
 import { GoogleLogin } from "react-google-login";
 import { GraphQLClient } from "graphql-request";
@@ -14,7 +15,7 @@ import LocationAutocomplete from 'components/LocationAutocomplete';
 
 
 
-const Header = ({hasTitle, hasAutocomplete}) => {
+const Header = ({hasTitle, hasAutocomplete, onBack}) => {
   console.log('hasAutocomplete', hasAutocomplete);
   const { dispatch } = useContext(MainContext);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
@@ -36,7 +37,8 @@ const Header = ({hasTitle, hasAutocomplete}) => {
   if(hasAutocomplete){
     return (
       <nav className="header centered" >
-        <LocationAutocomplete/>
+        <div className="centered__back-section" onClick={()=>onBack()}><Svg  className="centered__back-section__svg" icon="back"/></div>
+        <div className="centered__input-section"><LocationAutocomplete/></div>
       </nav>
 
     )

@@ -67,17 +67,7 @@ const LocationAutocomplete = () => {
       setSuggestions([]);
       setVal('');
     }
-    // if (e.keyCode === KeyCodes.ENTER) {
-    //   const latlng = {
-    //     lng: suggestions[0].center[0],
-    //     lat: suggestions[0].center[1]
-    //   };
-    //   setCoordinates(latlng);
-    //   setVal(suggestions[0].place_name);
-    //   setSuggestions([])
-
-    //   //TODO: handle choosing selected element from the list when pressing enter, currently it only works if user press enter while inside the input
-    // }
+    
   };
 
 
@@ -127,7 +117,6 @@ const LocationAutocomplete = () => {
       setSuggestions([]);
       console.error(error);
     }
-    // setCoordinates(latLng);
   };
 
   const handleLocation = index => {
