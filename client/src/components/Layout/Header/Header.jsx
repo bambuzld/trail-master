@@ -10,10 +10,12 @@ import {MainContext} from "containers/mainContext";
 import { ME_QUERY } from "graphql/queries";
 
 import {set} from 'utils/localStorage'
+import LocationAutocomplete from 'components/LocationAutocomplete';
 
 
 
-const Header = ({hasTitle}) => {
+const Header = ({hasTitle, hasAutocomplete}) => {
+  console.log('hasAutocomplete', hasAutocomplete);
   const { dispatch } = useContext(MainContext);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
   const onSuccess = async googleUser => {
@@ -31,7 +33,14 @@ const Header = ({hasTitle}) => {
       console.error(error)
     }
   };
+  if(hasAutocomplete){
+    return (
+      <nav className="header centered" >
+        <LocationAutocomplete/>
+      </nav>
 
+    )
+  }
   return (
     <nav className="header">
       <div className="header__logo">

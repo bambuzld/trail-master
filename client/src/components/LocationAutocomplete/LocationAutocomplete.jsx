@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
+
+import {MainContext} from 'containers/mainContext'
 
 import { KeyCodes } from 'constants/keyCodes';
 import { useFetch, useFocus, usePosition } from 'utils/Hooks';
@@ -14,11 +16,13 @@ import './LocationAutocomplete.scss';
 //TODO: x icon to clear the location text input
 
 const LocationAutocomplete = () => {
-  const [suggestions, setSuggestions] = useState([]);
+  const {dispatch} = useContext(MainContext)
+   const [suggestions, setSuggestions] = useState([]);
   console.log('suggestions', suggestions);
   const [loading, setLoading] = useState(false);
   const [inside, setInside] = useState(false);
-  const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
+  const [coordinates, setCoordinates] = useState({ latitude: null, longitude: null });
+  console.log('coordinates', coordinates);
   const [val, setVal] = useState('');
 
   const [suggestionRef, setFocus] = useFocus();
@@ -26,6 +30,8 @@ const LocationAutocomplete = () => {
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
   const { latitude, longitude, error } = usePosition(true);
+  console.log('longitude', longitude);
+  console.log('latitude', latitude);
   const [chosenIndex,setChosenIndex] = useState(null)
   console.log('render')
   useEffect(() => {
@@ -35,6 +41,7 @@ const LocationAutocomplete = () => {
     } 
     if(chosenIndex){
       setVal(suggestions[chosenIndex].place_name)
+      handleLocation(chosenIndex)
     }
     document.addEventListener('click', handleClickOutside, false);
     return () => {
@@ -126,14 +133,32 @@ const LocationAutocomplete = () => {
   const handleLocation = index => {
     console.log('index', index);
     const chosenLocation = suggestions[index];
+    console.log('chosenLocation', chosenLocation);
     setCoordinates({
-      lat: chosenLocation.center[0],
-      lng: chosenLocation.center[1]
+      latitude: chosenLocation.center[1],
+      longitude: chosenLocation.center[0]
+    });
+    console.log('ovo btj',coordinates)
+    dispatch({
+      type: 'SET_CHOSEN_POSITION',
+      payload: {
+        latitude: chosenLocation.center[1],
+        longitude: chosenLocation.center[0]
+      }
+    });
+    dispatch({
+      type: 'SET_USER_POSITION',
+      payload: null
     });
   };
 
   const handleUserLocation = () => {
-    setCoordinates({ lat: latitude, lng: longitude });
+    setCoordinates({ latitude: latitude, longitude: longitude });
+    dispatch({type: 'SET_USER_POSITION', payload: {latitude: latitude,longitude: longitude}})
+    dispatch({
+      type: 'SET_CHOSEN_POSITION',
+      payload: null
+    });
   };
 
   return (
