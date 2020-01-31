@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import './Header.scss';
 import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
-import Svg from 'components/Svg';
 
 import { Flex, Box, Image, Icon } from '@chakra-ui/core';
 
@@ -38,7 +37,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
       <header className="header">
         <Flex align="center" justify="space-between">
           <Flex align="center" onClick={onBack} className="header__back-icon">
-            <Icon name="arrow-back" size="3rem" color="white"/>
+            <Icon name="arrow-back" size="2rem" color="white"/>
           </Flex>
           <Box>
             <LocationAutocomplete />
@@ -54,9 +53,6 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
         <Box>
           <Image src={logo} alt="trail master" objectFit="fit" size="100px" />
         </Box>
-        {/* <Box>
-          TRAIL MASTER
-        </Box> */}
         <Flex justify="center" align="center">
           <ul className="header__nav">
             <li p={0}>Profile</li>

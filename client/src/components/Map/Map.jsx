@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import ReactMapGL, { NavigationControl } from 'react-map-gl';
+import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
-import {MainContext} from 'containers/mainContext';
+import { MainContext } from 'containers/mainContext';
 
 import './Map.scss';
 import PageLoader from 'components/PageLoader/PageLoader';
+
+import { Icon } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -49,6 +51,15 @@ const Map = () => {
         <div style={{ position: 'absolute', bottom: 32, right: 64 }}>
           <NavigationControl />
         </div>
+
+        {userPosition && (
+          <Marker
+            latitude={userPosition.latitude}
+            longitude={userPosition.longitude}
+          >
+            <Icon name="arrow-down" size="1.5rem" color="brandOrange" />
+          </Marker>
+        )}
       </ReactMapGL>
     </>
   );
