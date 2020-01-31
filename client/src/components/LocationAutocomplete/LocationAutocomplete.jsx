@@ -18,7 +18,7 @@ import ElementLoader from 'components/ElementLoader';
 
 import './LocationAutocomplete.scss';
 
-import { Flex, Box, Text, Input } from '@chakra-ui/core';
+import { Flex, Box, Text, Input, PseudoBox } from '@chakra-ui/core';
 
 //TODO: Code quality, code split & cleanup
 //TODO: x icon to clear the location text input
@@ -169,7 +169,7 @@ const LocationAutocomplete = () => {
         justify="center"
         align="center"
         w="35rem"
-        h="4rem"
+        h="3.5rem"
         background="white"
         roundedTop="2rem"
         roundedBottom={!suggestions.length && "2rem"}
@@ -216,7 +216,7 @@ const LocationAutocomplete = () => {
 
           >
             {suggestions.map((suggestion, index) => (
-              <Box
+              <PseudoBox
                 key={`${suggestion}${index}`}
                 background="white"
                 onClick={() => handleLocation(index)}
@@ -225,10 +225,12 @@ const LocationAutocomplete = () => {
                 ref={index === 0 && suggestionRef}
                 onKeyDown={e => handleEscapeOrEnterKey(e, index)}
                 roundedBottom={index === suggestions.length -1 && "2rem"}
+                _hover={{bg: "lighterGrey"}}
+                
               >
                 {console.log('index', index)}
                 <Text color="lightGrey" cursor="pointer" pt="2" px="10" fontSize="lg" fontWeight="bold" >{suggestion.place_name}</Text>
-              </Box>
+              </PseudoBox>
             ))}
           </Flex>
         )}

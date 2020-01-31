@@ -4,7 +4,7 @@ import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
 import Svg from 'components/Svg';
 
-import { Flex, Box, Image, Text } from '@chakra-ui/core';
+import { Flex, Box, Image, Icon } from '@chakra-ui/core';
 
 import { GoogleLogin } from 'react-google-login';
 import { GraphQLClient } from 'graphql-request';
@@ -37,9 +37,9 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
     return (
       <header className="header">
         <Flex align="center" justify="space-between">
-          <Box onClick={onBack} className="header__back-icon">
-            <Svg icon="back" />
-          </Box>
+          <Flex align="center" onClick={onBack} className="header__back-icon">
+            <Icon name="arrow-back" size="3rem" color="white"/>
+          </Flex>
           <Box>
             <LocationAutocomplete />
           </Box>
@@ -57,7 +57,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
         {/* <Box>
           TRAIL MASTER
         </Box> */}
-        <Flex>
+        <Flex justify="center" align="center">
           <ul className="header__nav">
             <li p={0}>Profile</li>
             <li>All Trails</li>
