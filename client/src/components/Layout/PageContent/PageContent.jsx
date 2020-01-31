@@ -1,67 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import "./PageContent.scss";
+import React from 'react'
+import {Flex} from '@chakra-ui/core'
 
-const PageContent = ({ children, className }) => {
-  return <div className={`page-content ${className || ""}`}>{children}</div>;
-};
+const PageContent = ({children, direction, align, justify}) => {
+  return (
+    <Flex direction={direction} justify={justify} align={align} height="100vh">
+      {children}
+    </Flex>
+  )
 
-PageContent.defaultProps = {
-  children: null,
-  className: ""
-};
+}
 
-PageContent.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]),
-  className: PropTypes.string
-};
 
-/**
- * Page Content Columns Component
- */
-PageContent.Columns = function Columns({ children }) {
-  return <div className="page-content__columns">{children}</div>;
-};
-
-PageContent.Columns.defaultProps = {
-  children: null
-};
-
-PageContent.Columns.propTypes = {
-  children: PropTypes.node
-};
-
-/**
- * Page Content Column Component
- */
-PageContent.Column = function Column({ children }) {
-  return <div className="page-content__column">{children}</div>;
-};
-
-PageContent.Column.defaultProps = {
-  children: null
-};
-
-PageContent.Column.propTypes = {
-  children: PropTypes.node
-};
-
-/**
- * Page Content Row Component
- */
-PageContent.Row = function Row({ children }) {
-  return <div className="page-content__row">{children}</div>;
-};
-
-PageContent.Row.defaultProps = {
-  children: null
-};
-
-PageContent.Row.propTypes = {
-  children: PropTypes.node
-};
-
-export default PageContent;
+export default PageContent

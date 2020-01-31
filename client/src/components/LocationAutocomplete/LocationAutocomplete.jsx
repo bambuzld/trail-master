@@ -1,8 +1,14 @@
-import React, { useState, useRef, useEffect, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useContext
+} from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
 
-import {MainContext} from 'containers/mainContext'
+import { MainContext } from 'containers/mainContext';
 
 import { KeyCodes } from 'constants/keyCodes';
 import { useFetch, useFocus, usePosition } from 'utils/Hooks';
@@ -12,16 +18,21 @@ import ElementLoader from 'components/ElementLoader';
 
 import './LocationAutocomplete.scss';
 
+import { Flex, Box, Text, Input } from '@chakra-ui/core';
+
 //TODO: Code quality, code split & cleanup
 //TODO: x icon to clear the location text input
 
 const LocationAutocomplete = () => {
-  const {dispatch} = useContext(MainContext)
-   const [suggestions, setSuggestions] = useState([]);
+  const { dispatch } = useContext(MainContext);
+  const [suggestions, setSuggestions] = useState([]);
   console.log('suggestions', suggestions);
   const [loading, setLoading] = useState(false);
   const [inside, setInside] = useState(false);
-  const [coordinates, setCoordinates] = useState({ latitude: null, longitude: null });
+  const [coordinates, setCoordinates] = useState({
+    latitude: null,
+    longitude: null
+  });
   console.log('coordinates', coordinates);
   const [val, setVal] = useState('');
 
@@ -32,23 +43,22 @@ const LocationAutocomplete = () => {
   const { latitude, longitude, error } = usePosition(true);
   console.log('longitude', longitude);
   console.log('latitude', latitude);
-  const [chosenIndex,setChosenIndex] = useState(null)
-  console.log('render')
+  const [chosenIndex, setChosenIndex] = useState(null);
+  console.log('render');
   useEffect(() => {
-    handleFocusChange()
+    handleFocusChange();
     if (inputRef) {
       inputRef.current.focus();
-    } 
-    if(chosenIndex){
-      setVal(suggestions[chosenIndex].place_name)
-      handleLocation(chosenIndex)
+    }
+    if (chosenIndex) {
+      setVal(suggestions[chosenIndex].place_name);
+      handleLocation(chosenIndex);
     }
     document.addEventListener('click', handleClickOutside, false);
     return () => {
       document.removeEventListener('click', handleClickOutside, false);
     };
   }, [chosenIndex]);
-
 
   //input handlers
   const handleClickOutside = event => {
@@ -62,14 +72,12 @@ const LocationAutocomplete = () => {
     }
   };
 
-  const handleEscapeOrEnterKey = (e,index) => {
+  const handleEscapeOrEnterKey = (e, index) => {
     if (e.keyCode === KeyCodes.ESCAPE) {
       setSuggestions([]);
       setVal('');
     }
-    
   };
-
 
   const handleFocusFirstSuggestion = e => {
     if (e.keyCode === KeyCodes.ARROW_DOWN && inside === false) {
@@ -91,14 +99,13 @@ const LocationAutocomplete = () => {
         if (e.keyCode === KeyCodes.ENTER) {
           const suggestionIndex = parseInt(active.getAttribute('data-key'), 10);
           console.log('suggestionIndex', suggestionIndex);
-          setChosenIndex(suggestionIndex)
+          setChosenIndex(suggestionIndex);
           // setVal(suggestions[parseInt(suggestionIndex,10)] &&suggestions[parseInt(suggestionIndex,10)].place_name)
         }
         active = document.activeElement;
       });
     }
-  }
-
+  };
 
   const handleClearAll = () => {
     setVal('');
@@ -106,6 +113,7 @@ const LocationAutocomplete = () => {
 
   const handleChange = async value => {
     setVal(value.target.value);
+    setLoading(true)
     const searchString = value.target.value;
     try {
       const results = await axios.get(
@@ -113,7 +121,9 @@ const LocationAutocomplete = () => {
       );
       console.log('result', results);
       setSuggestions(results.data.features);
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       setSuggestions([]);
       console.error(error);
     }
@@ -127,7 +137,7 @@ const LocationAutocomplete = () => {
       latitude: chosenLocation.center[1],
       longitude: chosenLocation.center[0]
     });
-    console.log('ovo btj',coordinates)
+    console.log('ovo btj', coordinates);
     dispatch({
       type: 'SET_CHOSEN_POSITION',
       payload: {
@@ -143,7 +153,10 @@ const LocationAutocomplete = () => {
 
   const handleUserLocation = () => {
     setCoordinates({ latitude: latitude, longitude: longitude });
-    dispatch({type: 'SET_USER_POSITION', payload: {latitude: latitude,longitude: longitude}})
+    dispatch({
+      type: 'SET_USER_POSITION',
+      payload: { latitude: latitude, longitude: longitude }
+    });
     dispatch({
       type: 'SET_CHOSEN_POSITION',
       payload: null
@@ -152,56 +165,72 @@ const LocationAutocomplete = () => {
 
   return (
     <>
-      <div
-        className={`location-autocomplete${
-          suggestions.length > 0 ? '__suggestions-opened' : ''
-        }`}
-        onKeyDown={e => handleFocusFirstSuggestion(e)}
+      <Flex
+        justify="center"
+        align="center"
+        w="35rem"
+        h="4rem"
+        background="white"
+        roundedTop="2rem"
+        roundedBottom={!suggestions.length && "2rem"}
+        p="6"
       >
-        <input
+        <Input
           placeholder="start typing"
+          size="lg"
+          fontSize="2xl"
+          fontWeight="bold"
+          h="3rem"
           onChange={handleChange}
           value={val}
           ref={inputRef}
           onKeyDown={handleEscapeOrEnterKey}
         />
-        {loading ? (
-          <ElementLoader />
-        ) : val === '' ? (
-          <span onClick={handleUserLocation}>
-            <Svg className="location-autocomplete__location-icon" icon="gps" />
-          </span>
-        ) : (
-          <span onClick={handleClearAll}>
-            <Svg
-              className="location-autocomplete__location-icon"
-              icon="close"
-            />
-          </span>
-        )}
-      </div>
+        <Box>
+          {!val ? (
+            <span onClick={handleUserLocation}>
+              <Svg
+                className="location-autocomplete__location-icon"
+                icon="gps"
+              />
+            </span>
+          ) : (
+            <span onClick={handleClearAll}>
+              <Svg
+                className="location-autocomplete__location-icon"
+                icon="close"
+              />
+            </span>
+          )}
+        </Box>
+      </Flex>
 
       <Transition in={suggestions.length > 0} timeout={2000}>
         {state => (
-          <div
-            className={`location-autocomplete__suggestions`}
+          <Flex
+            direction="column"
+            maxW="35rem"
             ref={suggestionsRef}
+            mt="-1rem"
+            roundedBottom="2rem"
+
           >
             {suggestions.map((suggestion, index) => (
-              <div
+              <Box
                 key={`${suggestion}${index}`}
-                className="location-autocomplete__suggestions__suggestion"
+                background="white"
                 onClick={() => handleLocation(index)}
                 data-key={index}
                 tabIndex={index}
-                ref={index === 0 && suggestionRef }
-                onKeyDown={e=>handleEscapeOrEnterKey(e,index)}
+                ref={index === 0 && suggestionRef}
+                onKeyDown={e => handleEscapeOrEnterKey(e, index)}
+                roundedBottom={index === suggestions.length -1 && "2rem"}
               >
-              {console.log('index', index)}
-                {suggestion.place_name}
-              </div>
+                {console.log('index', index)}
+                <Text color="lightGrey" cursor="pointer" pt="2" px="10" fontSize="lg" fontWeight="bold" >{suggestion.place_name}</Text>
+              </Box>
             ))}
-          </div>
+          </Flex>
         )}
       </Transition>
     </>

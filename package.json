@@ -12,6 +12,7 @@
   "dependencies": {
     "apollo-server": "^2.9.15",
     "dotenv": "^8.2.0",
+    "emotion-theming": "^10.0.27",
     "google-auth-library": "^5.8.0",
     "graphql": "^14.5.8",
     "history": "^4.10.1",

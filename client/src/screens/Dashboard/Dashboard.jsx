@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {  useContext } from 'react';
 
-import ReactMapGL, { NavigationControl } from 'react-map-gl';
 import { MainContext } from 'containers/mainContext';
 
 import './Dashboard.scss';
@@ -9,19 +8,15 @@ import PageContent from 'components/Layout/PageContent';
 import Map from 'components/Map';
 
 import LocationAutocomplete from 'components/LocationAutocomplete';
-import PageLoader from 'components/PageLoader';
+
+import { Text, Box } from '@chakra-ui/core';
 
 const Dashboard = () => {
-  const {dispatch,
+  const {
+    dispatch,
     map: { userPosition, chosenPosition }
   } = useContext(MainContext);
-  const [viewport, setViewport] = useState({
-    latitude: 46,
-    longitude: 15,
-    zoom: 12
-  });
 
-  const [loading, setLoading] = useState(true);
 
   const handleGoBack = () => {
     dispatch({
@@ -32,28 +27,37 @@ const Dashboard = () => {
       type: 'SET_USER_POSITION',
       payload: null
     });
-  }
-
+  };
 
   return (
     <div className="dashboard">
       {!userPosition && !chosenPosition ? (
         <>
           <Header hasTitle={false} />
-          <PageContent>
-            <div className="dashboard__title">
-              <span>TRAIL MASTER</span>
-            </div>
-            <div className="dashboard__subtitle">
-              <span>Explore the trails nearby...</span>
-            </div>
-            <LocationAutocomplete />
+          <PageContent direction="column" justify="center" align="center">
+            <Box>
+              <Text fontSize="6xl" fontWeight="bolder" color="white">
+                TRAIL MASTER
+              </Text>
+            </Box>
+            <Box>
+              <Text fontSize="2xl" fontWeight="bold" color="brandOrange">
+                Explore the trails nearby...
+              </Text>
+            </Box>{' '}
+            <Box mt="4">
+              <LocationAutocomplete />
+            </Box>
           </PageContent>
         </>
       ) : (
         <>
-          <Header hasTitle={false} hasAutocomplete={true} onBack={handleGoBack}/>
-          <Map/>
+          <Header
+            hasTitle={false}
+            hasAutocomplete={true}
+            onBack={handleGoBack}
+          />
+          <Map />
         </>
       )}
     </div>
