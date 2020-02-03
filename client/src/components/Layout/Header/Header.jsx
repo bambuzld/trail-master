@@ -34,8 +34,8 @@ import Svg from 'components/Svg';
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
   const { width, height } = useWindowDimensions();
-  const [isOpen, setOpen] = useState(true);
-  //TODO: onsuccess method. onfailure method, figure out context and reducer design
+  const [isOpen, setOpen] = useState(false);
+  
   const onSuccess = async googleUser => {
     try {
       const idToken = googleUser.getAuthResponse().id_token;
