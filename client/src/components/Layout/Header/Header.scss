@@ -1,69 +1,30 @@
-@import "assets/scss/main";
+@import 'assets/scss/main';
 
-.header {
-  //   background: white;
-  width: 100vw;
-  display: flex;
+.header{
+  padding: $spacing * 2 $spacing * 8;
   position: absolute;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 $spacing * 4;
-
-  &__logo {
-    flex: 1;
-    padding-left: $spacing * 4;
-    img {
-      width: 100px;
-      height: 100px;
-    }
-  }
-
-  &__title {
-    font: $font-1;
-    letter-spacing: $spacing / 2;
+  width: 100vw;
+  z-index: 222;
+  &__nav{
+    list-style: none;
+    display: flex;
     color: white;
-    flex: 1;
-    background-color: rgba($color: #ffffff, $alpha: 0.2);
-    padding: $spacing * 1.5;
-    min-width: 330px;
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
+    font: $font-4;
+    letter-spacing: 0.03rem;
+    li {
+      margin-left: $spacing * 5;
+
+    }
+    margin-right: 5rem;
   }
 
-  &__right-container {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-    padding-right: $spacing * 4;
-    align-items: center;
-    ul {
-      list-style: none;
-      display: flex;
-      color: white;
-      font: $font-button;
-      flex: 4;
-      li {
-        margin-left: $spacing * 5;
-      }
-
-      //   justify-content: space-between;
+  &__back-icon {
+    width: 60px;
+    height: 60px;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
     }
-    button{
-      width: 100px;
-      background: getColor(orange-light);
-      border: none;
-      height: 40px;
-      border-radius: 10px ;
-      transition: all .2s ease-in-out; 
-      &:hover{
-        transform:scale(1.1);
-      }
-    }
-    span {
-      flex: 1;
-      color: white;
-      font: $font-button;
-    }
+    cursor: pointer;
   }
 }

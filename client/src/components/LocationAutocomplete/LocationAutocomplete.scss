@@ -1,0 +1,79 @@
+@import 'assets/scss/main';
+
+.location-autocomplete {
+  width: 35rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 2rem;
+  padding: $spacing * 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    flex: 1;
+    border: 0px solid;
+    font: $font-2;
+  }
+  &__suggestions-opened {
+    width: 35rem;
+    height: 4rem;
+    background-color: white;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: $spacing * 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input {
+      flex: 1;
+      border: 0px solid;
+      font: $font-2;
+    }
+  }
+  &__location-icon {
+    margin-top: 7px;
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
+    }
+    cursor: pointer;
+  }
+  &__suggestions {
+    background-color: white;
+    // max-height: 30vh;
+    margin-top: 0rem;
+    width: 35rem;
+    border-radius: 2rem;
+    // padding: 0 $spacing * 4;
+
+    &__suggestion {
+      opacity: 1;
+      transition: opacity 2000ms ease-in;
+      background: white;
+      color: black;
+      width: 100%;
+      padding: $spacing $spacing * 4;
+      font: $font-3;
+      color: getColor(dark-grey);
+      cursor: pointer;
+      &:hover {
+        background-color: getColor(lighter-grey);
+      }
+      &:focus {
+        background-color: getColor(lighter-grey);
+      }
+      &:last-child {
+        margin-bottom: $spacing * 2;
+        border-radius: 0 0 2rem 2rem;
+      }
+    }
+  }
+}
+
+.animate {
+  transition: step-start 1s ease-in;
+}

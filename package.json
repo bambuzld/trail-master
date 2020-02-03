@@ -12,9 +12,15 @@
   "dependencies": {
     "apollo-server": "^2.9.15",
     "dotenv": "^8.2.0",
+    "emotion-theming": "^10.0.27",
     "google-auth-library": "^5.8.0",
     "graphql": "^14.5.8",
-    "mongoose": "^5.8.6"
+    "history": "^4.10.1",
+    "mongoose": "^5.8.6",
+    "react-inlinesvg": "^1.2.0",
+    "react-places-autocomplete": "^7.2.1",
+    "react-spinners-kit": "^1.9.1",
+    "react-transition-group": "^4.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

@@ -2,6 +2,8 @@ import React,{ createContext, useReducer } from "react";
 
 import userContext from 'containers/User/User.context'
 import UserReducer, {key as userKey} from 'containers/User/User.reducer'
+import mapContext from 'containers/Map/Map.context'
+import MapReducer, {key as mapKey} from 'containers/Map/Map.reducer'
 import combineReducer from 'utils/combineReducer'
 
 
@@ -12,10 +14,12 @@ export const MainContext = createContext()
 
 const MainProvider = ({children}) => {
   const initialValue = {
-    [userKey]:userContext
+    [userKey]:userContext,
+    [mapKey]:mapContext
   }
   const rootReducer = combineReducer({
-    [userKey]: UserReducer
+    [userKey]: UserReducer,
+    [mapKey]: MapReducer
   })
   const [state,dispatch] = useReducer(rootReducer,initialValue)
 
@@ -23,6 +27,9 @@ const MainProvider = ({children}) => {
     dispatch,
     [userKey]:{
       ...state[userKey]
+    },
+    [mapKey]:{
+      ...state[mapKey]
     }
   }
 

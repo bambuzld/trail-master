@@ -1,0 +1,32 @@
+@import 'assets/scss/main';
+
+.button {
+  width: 80px;
+  background: getColor(orange-light);
+  border: none;
+  height: 40px;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
+  color: white;
+  font: $font-4;
+  letter-spacing: 0.03rem;
+  cursor: pointer;
+}
+
+.large{
+    width: 120px
+}
+
+.secondary{
+    background: getColor(light-grey);
+    color: getColor(white)
+}
+
+.tertiary{
+    background: getColor(white);
+    border: 1px solid getColor(brand-orange);
+    color: getColor(brand-orange)
+}

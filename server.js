@@ -18,6 +18,8 @@ mongoose
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  // introspection: true,
+  // playground: true // za playground ukljucit na produkciji
   context: async ({ req }) => {
     let authToken = null;
     let currentUser = null;
@@ -35,4 +37,4 @@ const server = new ApolloServer({
   }
 });
 
-server.listen().then(({ url }) => console.log(url));
+server.listen({port: process.env.PORT || 4000}).then(({ url }) => console.log(url));
