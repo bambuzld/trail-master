@@ -18,6 +18,8 @@ const Map = () => {
   const {
     map: { userPosition, chosenPosition }
   } = useContext(MainContext);
+
+
   useEffect(() => {
     if (userPosition) {
       setViewport({
@@ -33,7 +35,9 @@ const Map = () => {
         zoom: 12
       });
     }
-    return () => {};
+    return () => {
+
+    };
   }, [userPosition, chosenPosition]);
 
   return (
@@ -43,7 +47,7 @@ const Map = () => {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         width="100vw"
         height="100vh"
-        mapStyle="mapbox://styles/mapbox/satellite-v9"
+        mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
         {...viewport}
         onLoad={() => setLoading(false)}
         onViewportChange={newViewport => setViewport(newViewport)}
@@ -56,6 +60,8 @@ const Map = () => {
           <Marker
             latitude={userPosition.latitude}
             longitude={userPosition.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
           >
             <Icon name="arrow-down" size="1.5rem" color="brandOrange" />
           </Marker>

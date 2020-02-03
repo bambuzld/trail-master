@@ -2,6 +2,7 @@
 export const actions = {
     "SET_USER_POSITION": "SET_USER_POSITION",
     "SET_CHOSEN_POSITION": "SET_CHOSEN_POSITION",
+    "SET_CHOSEN_LOCATION_DATA": "SET_CHOSEN_LOCATION_DATA",
 }
 
 
@@ -17,6 +18,11 @@ export default function reducer(state, { type, payload }) {
         return {
           ...state,
           chosenPosition: payload
+        };
+      case "SET_CHOSEN_LOCATION_DATA":
+        return {
+          ...state,
+          chosenLocationData: payload
         };
   
       default:

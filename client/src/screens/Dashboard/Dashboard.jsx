@@ -36,12 +36,12 @@ const Dashboard = () => {
           <Header hasTitle={false} />
           <PageContent direction="column" justify="center" align="center">
             <Box>
-              <Text fontSize="6xl" fontWeight="bolder" color="white">
+              <Text fontSize={['2xl','3xl','4xl','6xl']} fontWeight="bolder" color="white">
                 TRAIL MASTER
               </Text>
             </Box>
             <Box>
-              <Text fontSize="2xl" fontWeight="bold" color="brandOrange">
+              <Text fontSize={['lg','lg','xl','2xl']} fontWeight="bold" color="brandOrange">
                 Explore the trails nearby...
               </Text>
             </Box>{' '}

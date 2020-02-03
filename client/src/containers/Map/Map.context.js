@@ -1,4 +1,5 @@
 export default {
     userPosition: null,
-    chosenPosition: null
+    chosenPosition: null,
+    chosenLocationData: null
 }
