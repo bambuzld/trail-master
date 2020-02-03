@@ -34,7 +34,7 @@ import Svg from 'components/Svg';
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
   const { width, height } = useWindowDimensions();
-  const [isOpen, setOpen] = useState(false);
+const [isOpen, setOpen] = useState(false);
   
   const onSuccess = async googleUser => {
     try {
@@ -66,7 +66,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
             icon="arrow-back"
             size="lg"
             fontSize="2.5rem"
-            aria-label="back"
+            aria-label="back-to-dashboard"
             variantColor="white"
           />
         </Box>

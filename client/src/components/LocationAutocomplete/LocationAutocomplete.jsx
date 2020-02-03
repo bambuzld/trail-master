@@ -162,6 +162,8 @@ const LocationAutocomplete = () => {
         roundedTop="2rem"
         roundedBottom={!suggestions && '2rem'}
         p="6"
+        boxShadow="md"
+        textShadow="sm"
       >
         <Input
           placeholder="start typing"

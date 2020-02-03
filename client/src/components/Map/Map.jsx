@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
 import { MainContext } from 'containers/mainContext';
 
 import './Map.scss';
 import PageLoader from 'components/PageLoader/PageLoader';
+import Svg from 'components/Svg';
 
-import { Icon } from '@chakra-ui/core';
+import { Icon, Box } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -16,9 +17,23 @@ const Map = () => {
   });
   const [loading, setLoading] = useState(true);
   const {
-    map: { userPosition, chosenPosition }
+    map: { userPosition, chosenPosition, draftPin },
+    dispatch
   } = useContext(MainContext);
 
+  const handleMapClick = ({ lngLat, leftButton }) => {
+    console.log('leftButton', leftButton);
+    console.log('lngLat', lngLat);
+    if (!leftButton) return;
+    const [longitude, latitude] = lngLat;
+    dispatch({
+      type: 'UPDATE_DRAFT_PIN',
+      payload: {
+        longitude,
+        latitude
+      }
+    });
+  };
 
   useEffect(() => {
     if (userPosition) {
@@ -35,9 +50,7 @@ const Map = () => {
         zoom: 12
       });
     }
-    return () => {
-
-    };
+    return () => {};
   }, [userPosition, chosenPosition]);
 
   return (
@@ -47,23 +60,38 @@ const Map = () => {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         width="100vw"
         height="100vh"
-        mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+        // mapStyle="mapbox://styles/mapbox/satellite-streets-v11" //satellite and streets view
+        mapStyle="mapbox://styles/mapbox/outdoors-v11"
         {...viewport}
         onLoad={() => setLoading(false)}
         onViewportChange={newViewport => setViewport(newViewport)}
+        onClick={handleMapClick}
       >
-        <div style={{ position: 'absolute', bottom: 32, right: 64 }}>
+        <div style={{ position: 'absolute', bottom: 32, right: 100 }}>
           <NavigationControl />
         </div>
-
         {(userPosition || chosenPosition) && !loading && (
           <Marker
-            latitude={viewport.latitude}
-            longitude={viewport.longitude}
+            latitude={userPosition ? userPosition.latitude : chosenPosition.latitude}
+            longitude={userPosition ? userPosition.longitude: userPosition.longitude}
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <Icon name="arrow-down" size="2rem" color="#F00" />
+            <Box w="1.5rem" h="1.5rem">
+              <Svg icon="location" />
+            </Box>
+          </Marker>
+        )}
+        {draftPin && (
+          <Marker
+            latitude={draftPin.latitude}
+            longitude={draftPin.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <Box w="1.5rem" h="1.5rem">
+              <Svg icon="addLocation" />
+            </Box>
           </Marker>
         )}
       </ReactMapGL>

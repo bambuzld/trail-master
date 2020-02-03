@@ -1,5 +1,6 @@
 export default {
     userPosition: null,
     chosenPosition: null,
-    chosenLocationData: null
+    chosenLocationData: null,
+    draftPin: null
 }

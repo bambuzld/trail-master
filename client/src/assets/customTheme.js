@@ -48,6 +48,11 @@ export default {
     wider: "0.05em",
     widest: "0.1em",
   },
+  shadows: {
+    sm: '5px 10px',
+    md: '0.05rem 0.1rem 0.1rem #a7a7a7',
+    lg:'15px 20px'
+  },
   colors: {
     ...theme.colors,
     brandOrange: '#eb6b2a',
