@@ -1,3 +1,4 @@
+import React from 'react'
 import { theme } from '@chakra-ui/core';
 import  iconManager from 'components/Svg/iconManager'
 
@@ -11,6 +12,7 @@ import logo from 'assets/images/logo-large.svg'
 
 const customIcons = {
   //custom icons
+  
 }
 
 export default {
@@ -77,6 +79,9 @@ export default {
     "48": "12rem",
     "56": "14rem",
     "64": "16rem",
+  },
+  sizes:{
+    icon: "2rem"
   },
   icons: {
     ...theme.icons,

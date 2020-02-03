@@ -56,14 +56,14 @@ const Map = () => {
           <NavigationControl />
         </div>
 
-        {userPosition && (
+        {(userPosition || chosenPosition) && !loading && (
           <Marker
-            latitude={userPosition.latitude}
-            longitude={userPosition.longitude}
+            latitude={viewport.latitude}
+            longitude={viewport.longitude}
             offsetLeft={-19}
             offsetTop={-37}
           >
-            <Icon name="arrow-down" size="1.5rem" color="brandOrange" />
+            <Icon name="arrow-down" size="2rem" color="#F00" />
           </Marker>
         )}
       </ReactMapGL>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './Header.scss';
 import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
@@ -29,10 +29,12 @@ import { ME_QUERY } from 'graphql/queries';
 import { useWindowDimensions } from 'utils/Hooks';
 import { set } from 'utils/localStorage';
 import LocationAutocomplete from 'components/LocationAutocomplete';
+import Svg from 'components/Svg';
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
   const { width, height } = useWindowDimensions();
+  const [isOpen, setOpen] = useState(true);
   //TODO: onsuccess method. onfailure method, figure out context and reducer design
   const onSuccess = async googleUser => {
     try {
@@ -79,7 +81,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
     <Flex
       align="center"
       justify="space-between"
-      paddingX={['0', '8', '24', '40']}
+      paddingX={['6', '8', '24', '40']}
       position="absolute"
       w="100vw"
     >
@@ -88,43 +90,43 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
       </Box>
       <Flex justify="space-between" align="center">
         {width < 600 ? (
-          <Menu>
-            <MenuButton
-              px={4}
-              py={2}
-              transition="all 0.2s"
-              rounded="md"
-              // borderWidth="1px"
-              _hover={{ bg: 'gray.100' }}
-              // _expanded={{ bg: 'red.200' }}
-              // _focus={{ outline: 0, boxShadow: 'outline' }}
-            >
-              <Icon name="chevron-down" />
-            </MenuButton>
-            <Box>
-              <MenuList
+          <>
+            {!isOpen ? (
+              <Box w="icon" h="icon" onClick={() => setOpen(true)}>
+                <Svg icon="menu" />
+              </Box>
+            ) : (
+              <Flex
                 position="absolute"
+                bg="white"
                 h="100vh"
                 w="100vw"
                 top="0"
                 left="0"
-                display="flex"
-                flexDirection="column"
-                // justifyContent="center"
-                alignItems="center"
+                zIndex="1000"
+                // justify="flex-start"
+                align="center"
+                direction="column"
+                paddingX="8"
               >
-                <Box  display="flex" justifyContent="space-between" alignItems="center" direction="row">
-                  <Image
+                <Flex 
+                  justify="space-between"
+                  w="100%"
+                  mb="16"
+                >
+                 <Box>
+                 <Image
                     src={logo}
                     alt="trail master"
                     objectFit="fit"
                     size="100px"
                   />
-                  {/* <Text ml="8" color="black" fontWeight="bold" fontSize="4xl">TRAIL MASTER</Text> */}
-                  <Icon name="close" color="lightGrey" size="30px" />
-                </Box>
-                <MenuDivider color="lightGrey" />
-                <MenuItem mb="8">
+                 </Box>
+                  <Box onClick={() => setOpen(false)}>
+                    <Svg icon="close" />
+                  </Box>
+                </Flex>
+                <Box mb="8">
                   <Text
                     fontSize="2xl"
                     color="darkGrey"
@@ -133,8 +135,8 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
                   >
                     Profile
                   </Text>
-                </MenuItem>
-                <MenuItem mb="8">
+                </Box>
+                <Box mb="8">
                   <Text
                     fontSize="2xl"
                     color="darkGrey"
@@ -143,25 +145,21 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
                   >
                     All trails
                   </Text>
-                </MenuItem>
-                <MenuItem>
+                </Box>
+                <Box>
                   <GoogleLogin
                     clientId="325129789199-aeblq0vopuh6dc62sen30c3q6mqli0kq.apps.googleusercontent.com"
                     buttonText="Sign in"
                     onSuccess={onSuccess}
                     onFailure={error => console.error(error)}
                     render={props => (
-                      <Button
-                        label="Sign in"
-                        variant="secondary"
-                        onClick={props.onClick}
-                      />
+                      <Button label="Sign in" onClick={props.onClick} />
                     )}
                   />
-                </MenuItem>
-              </MenuList>
-            </Box>
-          </Menu>
+                </Box>
+              </Flex>
+            )}
+          </>
         ) : (
           <>
             <Box mr="24">

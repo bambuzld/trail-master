@@ -3,16 +3,16 @@ import React, {
   useRef,
   useEffect,
   useCallback,
-  useContext,
-  useMemo
+  useContext
 } from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
+import gps from 'assets/images/gps_orange.svg';
 
 import { MainContext } from 'containers/mainContext';
 
 import { KeyCodes } from 'constants/keyCodes';
-import { useFocus, usePosition } from 'utils/Hooks';
+import { usePosition } from 'utils/Hooks';
 
 import Svg from 'components/Svg';
 
@@ -20,26 +20,19 @@ import './LocationAutocomplete.scss';
 
 import { Flex, Box, Text, Input, PseudoBox, Icon } from '@chakra-ui/core';
 
-//TODO: Code quality, code split & cleanup
-//TODO: x icon to clear the location text input
-
 const LocationAutocomplete = () => {
-  const { dispatch, map:{chosenLocationData} } = useContext(MainContext);
+  const {
+    dispatch,
+    map: { chosenLocationData }
+  } = useContext(MainContext);
   const [suggestions, setSuggestions] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [coordinates, setCoordinates] = useState({
-    latitude: null,
-    longitude: null
-  });
   const [val, setVal] = useState('');
-
   const suggestionRef = useRef(null);
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
   const { latitude, longitude, error } = usePosition(true);
   const [chosenIndex, setChosenIndex] = useState(null);
 
-  //input handlers
   const handleClickOutside = useCallback(event => {
     setSuggestions(null);
   }, []);
@@ -70,7 +63,7 @@ const LocationAutocomplete = () => {
         if (e.keyCode === KeyCodes.ENTER) {
           const suggestionIndex = parseInt(active.getAttribute('data-key'), 10);
           setChosenIndex(suggestionIndex);
-          setSuggestions(null)
+          setSuggestions(null);
         }
         active = document.activeElement;
       });
@@ -80,22 +73,18 @@ const LocationAutocomplete = () => {
   const handleClearAll = () => {
     setVal('');
     setSuggestions(null);
-    dispatch({type: 'SET_CHOSEN_LOCATION_DATA',payload: null})
-
+    dispatch({ type: 'SET_CHOSEN_LOCATION_DATA', payload: null });
   };
 
   const handleChange = async value => {
     setVal(value.target.value);
-    setLoading(true);
     const searchString = value.target.value;
     try {
       const results = await axios.get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchString}.json?access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`
       );
       setSuggestions(results.data.features);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       setSuggestions(null);
       console.error(error);
     }
@@ -104,10 +93,6 @@ const LocationAutocomplete = () => {
   const handleLocation = useCallback(
     index => {
       const chosenLocation = suggestions[index];
-      setCoordinates({
-        latitude: chosenLocation.center[1],
-        longitude: chosenLocation.center[0]
-      });
       dispatch({
         type: 'SET_CHOSEN_POSITION',
         payload: {
@@ -124,7 +109,6 @@ const LocationAutocomplete = () => {
   );
 
   const handleUserLocation = useCallback(() => {
-    setCoordinates({ latitude: latitude, longitude: longitude });
     dispatch({
       type: 'SET_USER_POSITION',
       payload: { latitude: latitude, longitude: longitude }
@@ -136,9 +120,12 @@ const LocationAutocomplete = () => {
   }, [dispatch, latitude, longitude]);
 
   useEffect(() => {
+    if (error) {
+      console.error(error);
+    }
     handleFocusChange();
-    if(chosenLocationData){
-      setVal(chosenLocationData.place_name)
+    if (chosenLocationData) {
+      setVal(chosenLocationData.place_name);
     }
     document.addEventListener('keydown', handleEscapeOrEnterKey, false);
     document.addEventListener('click', handleClickOutside, false);
@@ -157,7 +144,10 @@ const LocationAutocomplete = () => {
     if (suggestions) {
       setVal(suggestions[chosenIndex].place_name);
       handleLocation(chosenIndex);
-      dispatch({type: 'SET_CHOSEN_LOCATION_DATA',payload: suggestions[chosenIndex]})
+      dispatch({
+        type: 'SET_CHOSEN_LOCATION_DATA',
+        payload: suggestions[chosenIndex]
+      });
     }
   }, [chosenIndex]);
 
@@ -184,23 +174,17 @@ const LocationAutocomplete = () => {
           ref={inputRef}
           onKeyDown={handleFocusFirstSuggestion}
         />
-        <Box>
-          {!val ? (
-            <span onClick={handleUserLocation}>
-              <Svg
-                className="location-autocomplete__location-icon"
-                icon="gps"
-                transition="all 0.2s ease-in-out"
-                _hover={{
-                  resize: '105%'
-                }}
-              />
-            </span>
-          ) : (
-            <span onClick={handleClearAll}>
-              <Icon name="close" cursor="pointer" />
-            </span>
-          )}
+        <Box
+          onClick={!val ? handleUserLocation : handleClearAll}
+          transition="all 0.2s ease-in-out"
+          _hover={{
+            resize: '105%'
+          }}
+          cursor="pointer"
+          h="icon"
+          w="icon"
+        >
+          {!val ? <Svg icon="gps" /> : <Svg icon="close" />}
         </Box>
       </Flex>
 
