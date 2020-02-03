@@ -7,7 +7,7 @@ import './Map.scss';
 import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
 
-import { Icon, Box } from '@chakra-ui/core';
+import {  Box } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -21,19 +21,22 @@ const Map = () => {
     dispatch
   } = useContext(MainContext);
 
-  const handleMapClick = ({ lngLat, leftButton }) => {
-    console.log('leftButton', leftButton);
-    console.log('lngLat', lngLat);
-    if (!leftButton) return;
-    const [longitude, latitude] = lngLat;
-    dispatch({
-      type: 'UPDATE_DRAFT_PIN',
-      payload: {
-        longitude,
-        latitude
-      }
-    });
-  };
+  const handleMapClick = useCallback(
+    ({ lngLat, leftButton }) => {
+      console.log('leftButton', leftButton);
+      console.log('lngLat', lngLat);
+      if (!leftButton) return;
+      const [longitude, latitude] = lngLat;
+      dispatch({
+        type: 'UPDATE_DRAFT_PIN',
+        payload: {
+          longitude,
+          latitude
+        }
+      });
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (userPosition) {
@@ -72,8 +75,12 @@ const Map = () => {
         </div>
         {(userPosition || chosenPosition) && !loading && (
           <Marker
-            latitude={userPosition ? userPosition.latitude : chosenPosition.latitude}
-            longitude={userPosition ? userPosition.longitude: userPosition.longitude}
+            latitude={
+              userPosition ? userPosition.latitude : chosenPosition.latitude
+            }
+            longitude={
+              userPosition ? userPosition.longitude : chosenPosition.longitude
+            }
             offsetLeft={-19}
             offsetTop={-37}
           >

@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
-import gps from 'assets/images/gps_orange.svg';
 
 import { MainContext } from 'containers/mainContext';
 
@@ -18,7 +17,7 @@ import Svg from 'components/Svg';
 
 import './LocationAutocomplete.scss';
 
-import { Flex, Box, Text, Input, PseudoBox, Icon } from '@chakra-ui/core';
+import { Flex, Box, Text, Input, PseudoBox } from '@chakra-ui/core';
 
 const LocationAutocomplete = () => {
   const {

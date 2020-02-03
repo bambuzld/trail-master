@@ -1,19 +1,5 @@
-import React from 'react'
 import { theme } from '@chakra-ui/core';
-import  iconManager from 'components/Svg/iconManager'
 
-
-//icons
-import gps from 'assets/images/gps_orange.svg'
-import close from 'assets/images/close.svg'
-import back from 'assets/images/arrow-back.svg'
-import logo from 'assets/images/logo-large.svg'
-
-
-const customIcons = {
-  //custom icons
-  
-}
 
 export default {
   breakpoints: ['30em', '48em', '62em', '80em'],
@@ -90,6 +76,5 @@ export default {
   },
   icons: {
     ...theme.icons,
-    ...customIcons
   }
 };

@@ -9,15 +9,6 @@ import {
   Image,
   IconButton,
   Link,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuGroup,
-  MenuDivider,
-  MenuOptionGroup,
-  MenuItemOption,
-  Icon,
   Text
 } from '@chakra-ui/core';
 
@@ -33,7 +24,7 @@ import Svg from 'components/Svg';
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 const [isOpen, setOpen] = useState(false);
   
   const onSuccess = async googleUser => {
