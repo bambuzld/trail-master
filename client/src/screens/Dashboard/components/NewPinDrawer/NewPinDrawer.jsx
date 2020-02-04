@@ -10,35 +10,36 @@ import {
   Button,
   useDisclosure
 } from '@chakra-ui/core';
+import NewPinForm from 'screens/Dashboard/components/NewPinForm'
 
-const NewPinDrawer = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+const NewPinDrawer = ({isOpen}) => {
+  const { onClose, onOpen } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen}>
+      {/* <Button onClick={onOpen}>
       Open
-    </Button>
+    </Button> */}
     <Drawer
       isOpen={isOpen}
       placement="right"
       onClose={onClose}
-      size="lg"
+      size="sm"
       isFullHeight={false}
       // finalFocusRef={btnRef}
     >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create your account</DrawerHeader>
+        <DrawerHeader>Create new pin</DrawerHeader>
 
-        <DrawerBody>{/* <Input placeholder="Type here..." /> */}</DrawerBody>
+        <DrawerBody><NewPinForm/></DrawerBody>
 
-        <DrawerFooter>
+        {/* <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
           <Button color="blue">Save</Button>
-        </DrawerFooter>
+        </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
     </>

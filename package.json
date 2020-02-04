@@ -17,12 +17,7 @@
     "google-auth-library": "^5.8.0",
     "graphql": "^14.5.8",
     "history": "^4.10.1",
-    "mongoose": "^5.8.6",
-    "react-inlinesvg": "^1.2.0",
-    "react-places-autocomplete": "^7.2.1",
-    "react-spinners-kit": "^1.9.1",
-    "react-transition-group": "^4.3.0",
-    "yup": "^0.28.1"
+    "mongoose": "^5.8.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

@@ -6,8 +6,9 @@ import { MainContext } from 'containers/mainContext';
 import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
 import Popover from 'components/Popover';
+import NewPinDrawer from 'screens/Dashboard/components/NewPinDrawer'
 
-import { Box, Text } from '@chakra-ui/core';
+import { Box, Button } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -17,6 +18,7 @@ const Map = () => {
   });
   const [loading, setLoading] = useState(true);
   const [pop, setPop] = useState(false);
+  const [showDrawer, setDrawer] = useState(false);
   const {
     map: { userPosition, chosenPosition, draftPin },
     dispatch
@@ -70,6 +72,7 @@ const Map = () => {
         onLoad={() => setLoading(false)}
         onViewportChange={newViewport => setViewport(newViewport)}
         onClick={handleMapClick}
+        //disable map when draft pin is present to prevent setting pin whereever user clicks on popover
       >
         <div style={{ position: 'absolute', bottom: 32, right: 100 }}>
           <NavigationControl />
@@ -90,19 +93,10 @@ const Map = () => {
             </Box>
           </Marker>
         )}
-        {/* {draftPin && (
-          <Marker
-            latitude={draftPin.latitude}
-            longitude={draftPin.longitude}
-            offsetLeft={-19}
-            offsetTop={-37}
-          >
-            <Box w="1.5rem" h="1.5rem">
-              <Svg icon="addLocation" />
-            </Box>
-          </Marker>
-        )} */}
-        {draftPin && (
+
+        
+
+        {draftPin && !showDrawer &&  (
           <Marker
             latitude={draftPin.latitude}
             longitude={draftPin.longitude}
@@ -110,17 +104,43 @@ const Map = () => {
             offsetTop={-37}
           >
             <Popover
-            width="64"
+            boxShadow="0"
+            isOpen={pop}
+            onClose={()=>setPop(false)}
+              width="64"
               popoverTrigger={
-                <Box w="1.5rem" h="1.5rem">
+                <Box w="1.5rem" h="1.5rem" onClick={()=>setPop(true)} >
                   <Svg icon="addLocation" />
                 </Box>
               }
-              popoverBody={<Box><Text>sada</Text></Box>}
-              headerText="Helo maj frend"
+              popoverBody={
+                <Box>
+                  <Button
+                    mt={4}
+                    type="submit"
+                    color="brandOrange"
+                    mr={4}
+                    onClick={()=>setDrawer(true)}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    mt={4}
+                    color="darkGrey"
+                    onClick={() => setPop(false)}
+                  >
+                    No
+                  </Button>
+                </Box>
+              }
+              headerText="Add new trail?"
             />
           </Marker>
         )}
+
+
+        <NewPinDrawer isOpen={showDrawer}/>
+        
       </ReactMapGL>
     </>
   );

@@ -13,11 +13,11 @@ import {
   } from '@chakra-ui/core';
   
 
-const PopoverComp = ({popoverTrigger,popoverBody,headerText, width, isOpen}) => {
+const PopoverComp = ({popoverTrigger,popoverBody,headerText, width, isOpen,onClose}) => {
     console.log('popoverTrigger', popoverTrigger);
     const [open,setOpen] = useState(isOpen)
     return (
-        <Popover>
+        <Popover  isOpen={isOpen} onClose={onClose}>
               <PopoverTrigger>
                  {popoverTrigger}
               </PopoverTrigger>

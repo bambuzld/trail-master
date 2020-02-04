@@ -1,5 +1,5 @@
 export const CREATE_PIN_MUTATION = `
-    mutation($title: String!, $image: String!, $content: String!, $latitude: Float!, $longitude: $Float!){
+    mutation($title: String!, $image: String!, $content: String!, $latitude: Float!, $longitude: Float!){
         createPin(input:{
             title: $title,
             image: $image,
@@ -14,11 +14,11 @@ export const CREATE_PIN_MUTATION = `
             content
             latitude
             longitude
-            author{
-                _id
-                name
-                email
-            }
         }
     }
-`
+    `
+                        // author{
+                        //     _id
+                        //     name
+                        //     email
+                        // }

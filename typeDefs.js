@@ -19,6 +19,7 @@ module.exports = gql`
     image: String
     latitude: Float
     longitude: Float
+    title: String
   }
 
 

@@ -15,15 +15,26 @@ module.exports = {
   Query: {
     me: authenticated((root,args,ctx)=>ctx.currentUser)
   },
+  // Mutation: {
+  //   createPin: authenticated(async (root,args,ctx) => {
+  //     const newPin = await new Pin({
+  //       ...args.input,
+  //       author: ctx.currentUser._id
+  //     }).save()
+
+  //     const pinAdded = await Pin.populate(newPin,'author')
+  //     return pinAdded
+  //   }) 
+  // },
   Mutation: {
-    createPin: authenticated(async (root,args,ctx) => {
+    createPin: async (root,args,ctx) => {
       const newPin = await new Pin({
         ...args.input,
-        author: ctx.currentUser._id
+        // author: ctx.currentUser._id
       }).save()
 
-      const pinAdded = await Pin.populate(newPin,'author')
+      const pinAdded = await Pin.populate(newPin)
       return pinAdded
-    }) 
+    } 
   }
 };
