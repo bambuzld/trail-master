@@ -5,8 +5,9 @@ import { MainContext } from 'containers/mainContext';
 
 import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
+import Popover from 'components/Popover';
 
-import { Box } from '@chakra-ui/core';
+import { Box, Text } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -15,6 +16,7 @@ const Map = () => {
     zoom: 12
   });
   const [loading, setLoading] = useState(true);
+  const [pop, setPop] = useState(false);
   const {
     map: { userPosition, chosenPosition, draftPin },
     dispatch
@@ -100,18 +102,23 @@ const Map = () => {
             </Box>
           </Marker>
         )} */}
-
         {draftPin && (
           <Marker
             latitude={draftPin.latitude}
             longitude={draftPin.longitude}
             offsetLeft={-19}
             offsetTop={-37}
-            captureClick={true}
           >
-            <Box w="1.5rem" h="1.5rem">
-              <Svg icon="addLocation" />
-            </Box>
+            <Popover
+            width="64"
+              popoverTrigger={
+                <Box w="1.5rem" h="1.5rem">
+                  <Svg icon="addLocation" />
+                </Box>
+              }
+              popoverBody={<Box><Text>sada</Text></Box>}
+              headerText="Helo maj frend"
+            />
           </Marker>
         )}
       </ReactMapGL>

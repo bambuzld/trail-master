@@ -51,7 +51,7 @@ const [isOpen, setOpen] = useState(false);
         zIndex="222"
         mt="4"
       >
-        <Box onClick={onBack} mt="-1rem" mr="1rem">
+        <Box onClick={onBack} mt="" mr="1rem">
           <IconButton
             icon="arrow-back"
             size="lg"

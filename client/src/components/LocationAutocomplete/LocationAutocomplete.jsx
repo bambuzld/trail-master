@@ -174,6 +174,7 @@ const LocationAutocomplete = () => {
           ref={inputRef}
           onKeyDown={handleFocusFirstSuggestion}
           data-testid="location-autocomplete"
+          border="0px"
         />
         <Box
           onClick={!val ? handleUserLocation : handleClearAll}
