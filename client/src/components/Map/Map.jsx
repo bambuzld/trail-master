@@ -3,11 +3,10 @@ import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 
 import { MainContext } from 'containers/mainContext';
 
-import './Map.scss';
 import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
 
-import {  Box } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/core';
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -89,12 +88,26 @@ const Map = () => {
             </Box>
           </Marker>
         )}
+        {/* {draftPin && (
+          <Marker
+            latitude={draftPin.latitude}
+            longitude={draftPin.longitude}
+            offsetLeft={-19}
+            offsetTop={-37}
+          >
+            <Box w="1.5rem" h="1.5rem">
+              <Svg icon="addLocation" />
+            </Box>
+          </Marker>
+        )} */}
+
         {draftPin && (
           <Marker
             latitude={draftPin.latitude}
             longitude={draftPin.longitude}
             offsetLeft={-19}
             offsetTop={-37}
+            captureClick={true}
           >
             <Box w="1.5rem" h="1.5rem">
               <Svg icon="addLocation" />

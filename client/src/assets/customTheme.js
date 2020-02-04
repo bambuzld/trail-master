@@ -2,6 +2,7 @@ import { theme } from '@chakra-ui/core';
 
 
 export default {
+  ...theme,
   breakpoints: ['30em', '48em', '62em', '80em'],
   fonts: {
     heading: '"Poppins", sans-serif',
@@ -9,6 +10,7 @@ export default {
     mono: 'Poppins, monospace'
   },
   fontSizes: {
+    ...theme.fontSizes,
     xs: '0.75rem',
     sm: '0.875rem',
     md: '1rem',
@@ -21,12 +23,14 @@ export default {
     '6xl': '4rem'
   },
   fontWeights: {
+    ...theme.fontWeights,
     normal: 400,
     medium: 500,
     bold: 'bold',
     bolder: 'bolder'
   },
   letterSpacings: {
+    ...theme.letterSpacings,
     tighter: "-0.05em",
     tight: "-0.025em",
     normal: "0",
@@ -35,6 +39,7 @@ export default {
     widest: "0.1em",
   },
   shadows: {
+    ...theme.shadows,
     sm: '5px 10px',
     md: '0.05rem 0.1rem 0.1rem #a7a7a7',
     lg:'15px 20px'
@@ -51,6 +56,7 @@ export default {
     greydient: 'linear-gradient(to bottom, #000000, #323332)'
   },
   space: {
+    ...theme.space,
     px: "1px",
     "0": "0",
     "1": "0.25rem",
@@ -72,6 +78,7 @@ export default {
     "64": "16rem",
   },
   sizes:{
+    ...theme.sizes,
     icon: "2rem"
   },
   icons: {

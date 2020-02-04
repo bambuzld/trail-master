@@ -10,6 +10,7 @@ const  Button = ({size,variant, label, onClick}) => {
     <button
       className={`button ${buttonVariant} ${buttonSize}`}
       onClick={onClick}
+      data-testid = 'button'
     >
       {label}
     </button>
@@ -20,7 +21,6 @@ const  Button = ({size,variant, label, onClick}) => {
 Button.defaultProps = {
   size: '',
   variant: 'primary',
-  children: {},
   label: '',
   onClick: () => {}
 }
@@ -28,7 +28,6 @@ Button.defaultProps = {
 Button.propTypes = {
   size: propTypes.string,
   variant: propTypes.string,
-  children: propTypes.node,
   label: propTypes.string,
   onClick: propTypes.func
 };

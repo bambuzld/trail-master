@@ -15,7 +15,6 @@ import { usePosition } from 'utils/Hooks';
 
 import Svg from 'components/Svg';
 
-import './LocationAutocomplete.scss';
 
 import { Flex, Box, Text, Input, PseudoBox } from '@chakra-ui/core';
 
@@ -174,6 +173,7 @@ const LocationAutocomplete = () => {
           value={val}
           ref={inputRef}
           onKeyDown={handleFocusFirstSuggestion}
+          data-testid="location-autocomplete"
         />
         <Box
           onClick={!val ? handleUserLocation : handleClearAll}
@@ -184,6 +184,7 @@ const LocationAutocomplete = () => {
           cursor="pointer"
           h="icon"
           w="icon"
+          data-testid={!val? 'user-location' : 'clear-all'}
         >
           {!val ? <Svg icon="gps" /> : <Svg icon="close" />}
         </Box>

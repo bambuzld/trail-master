@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import './Header.scss';
 import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
 
