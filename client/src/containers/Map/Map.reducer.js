@@ -4,6 +4,7 @@ export const actions = {
     "SET_CHOSEN_POSITION": "SET_CHOSEN_POSITION",
     "SET_CHOSEN_LOCATION_DATA": "SET_CHOSEN_LOCATION_DATA",
     "UPDATE_DRAFT_PINT": "UPDATE_DRAFT_PINT",
+    "GET_PINS": "GET_PINS"
 }
 
 
@@ -30,6 +31,11 @@ export default function reducer(state, { type, payload }) {
         return {
           ...state,
           draftPin: payload
+        };
+      case "GET_PINS":
+        return {
+          ...state,
+          pins: payload 
         };
         
       default:

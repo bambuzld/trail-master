@@ -7,8 +7,12 @@ import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
 import Popover from 'components/Popover';
 import NewPinDrawer from 'screens/Dashboard/components/NewPinDrawer'
-
 import { Box, Button } from '@chakra-ui/core';
+
+import {useNotification} from 'utils/useNotifications'
+import {useClient} from 'utils/Hooks'
+import {GET_PINS_QUERY} from 'graphql/queries'
+
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -16,12 +20,15 @@ const Map = () => {
     longitude: 15,
     zoom: 12
   });
+  const [data,addNotification] = useNotification()
   const [loading, setLoading] = useState(true);
-  const [pop, setPop] = useState(false);
+  const [pop, setPop] = useState(true);
   const [showDrawer, setDrawer] = useState(false);
   
+  const client = useClient()
+
   const {
-    map: { userPosition, chosenPosition, draftPin },
+    map: { userPosition, chosenPosition, draftPin, pins },
     dispatch
   } = useContext(MainContext);
 
@@ -42,7 +49,18 @@ const Map = () => {
     [dispatch]
   );
 
-  useEffect(() => {
+  const getPins =  useCallback( async ()=>{
+    try{
+      const payload = await client.request(GET_PINS_QUERY)
+      dispatch({type: "GET_PINS",payload: payload.getPins})
+    }
+    catch{
+      addNotification({status:'error',text: 'Server error, couldnt get Pins', duration: 3000})
+    }
+  },[])
+
+  useEffect(() => {    
+    getPins()
     if (userPosition) {
       setViewport({
         latitude: userPosition.latitude,
@@ -80,6 +98,7 @@ const Map = () => {
         </div>
         {(userPosition || chosenPosition) && !loading && (
           <Marker
+            draggable={false}
             latitude={
               userPosition ? userPosition.latitude : chosenPosition.latitude
             }
@@ -95,9 +114,21 @@ const Map = () => {
           </Marker>
         )}
 
-        
+        {pins.length > 0 &&
+          pins.map(pin => (
+            <Marker
+              latitude={pin.latitude}
+              longitude={pin.longitude}
+              offsetLeft={-19}
+              offsetTop={-37}
+            >
+              <Box w="1.5rem" h="1.5rem" onClick={() => setPop(true)}>
+                  <Svg icon="addLocation" />
+                </Box>
+            </Marker>
+          ))}
 
-        {draftPin && !showDrawer &&  (
+        {draftPin && !showDrawer && (
           <Marker
             latitude={draftPin.latitude}
             longitude={draftPin.longitude}
@@ -105,12 +136,12 @@ const Map = () => {
             offsetTop={-37}
           >
             <Popover
-            boxShadow="0"
-            isOpen={pop}
-            onClose={()=>setPop(false)}
+              boxShadow="0"
+              isOpen={pop}
+              onClose={() => setPop(false)}
               width="64"
               popoverTrigger={
-                <Box w="1.5rem" h="1.5rem" onClick={()=>setPop(true)} >
+                <Box w="1.5rem" h="1.5rem" onClick={() => setPop(true)}>
                   <Svg icon="addLocation" />
                 </Box>
               }
@@ -121,15 +152,11 @@ const Map = () => {
                     type="submit"
                     color="brandOrange"
                     mr={4}
-                    onClick={()=>setDrawer(true)}
+                    onClick={() => setDrawer(true)}
                   >
                     Yes
                   </Button>
-                  <Button
-                    mt={4}
-                    color="darkGrey"
-                    onClick={() => setPop(false)}
-                  >
+                  <Button mt={4} color="darkGrey" onClick={() => setPop(false)}>
                     No
                   </Button>
                 </Box>
@@ -139,9 +166,7 @@ const Map = () => {
           </Marker>
         )}
 
-
-        <NewPinDrawer isOpen={showDrawer} onClose={()=>setDrawer(false)}/>
-        
+        <NewPinDrawer isOpen={showDrawer} onClose={() => setDrawer(false)} />
       </ReactMapGL>
     </>
   );

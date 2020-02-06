@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
 
@@ -11,24 +11,52 @@ import {
   Text
 } from '@chakra-ui/core';
 
+
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuGroup,
+  MenuDivider,
+  MenuOptionGroup,
+  MenuItemOption,
+} from "@chakra-ui/core";
+
 import { GoogleLogin } from 'react-google-login';
 import { GraphQLClient } from 'graphql-request';
 
 import { MainContext } from 'containers/mainContext';
 import { ME_QUERY } from 'graphql/queries';
 import { useWindowDimensions } from 'utils/Hooks';
-import { set } from 'utils/localStorage';
+import { set,get,deleteItem } from 'utils/localStorage';
 import LocationAutocomplete from 'components/LocationAutocomplete';
 import Svg from 'components/Svg';
-import {useClient} from 'utils/Hooks'
 import {BASE_URL} from 'utils/Hooks/useClient'
 
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
   const { width } = useWindowDimensions();
-const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuth,setIsAuth] = useState(false)
+  const [user,setUser] = useState(null)
+
   
+  useEffect(() => {
+                    const user = get('currentUser');
+                    if (user) {
+                      setIsAuth(true);
+                      setUser(user.me);
+                    }
+                  }, [])
+  
+  const logout = useCallback(() => {
+    deleteItem('currentUser');
+    setIsAuth(false);
+    setUser(null);
+  }, []);
   const onSuccess = async googleUser => {
     try {
       const idToken = googleUser.getAuthResponse().id_token;
@@ -39,6 +67,10 @@ const [isOpen, setOpen] = useState(false);
       dispatch({ type: 'LOGIN_USER', payload: me });
       dispatch({ type: 'IS_LOGGED_IN', payload: googleUser.isSignedIn() });
       set('currentUser', me);
+      setUser(me.me)
+      setIsAuth(true)
+      
+  
     } catch (error) {
       console.error(error);
     }
@@ -102,19 +134,15 @@ const [isOpen, setOpen] = useState(false);
                 direction="column"
                 paddingX="8"
               >
-                <Flex 
-                  justify="space-between"
-                  w="100%"
-                  mb="16"
-                >
-                 <Box>
-                 <Image
-                    src={logo}
-                    alt="trail master"
-                    objectFit="fit"
-                    size="100px"
-                  />
-                 </Box>
+                <Flex justify="space-between" w="100%" mb="16">
+                  <Box>
+                    <Image
+                      src={logo}
+                      alt="trail master"
+                      objectFit="fit"
+                      size="100px"
+                    />
+                  </Box>
                   <Box onClick={() => setOpen(false)}>
                     <Svg icon="close" />
                   </Box>
@@ -163,15 +191,49 @@ const [isOpen, setOpen] = useState(false);
                 All trails
               </Link>
             </Box>
-            <GoogleLogin
-              clientId="325129789199-aeblq0vopuh6dc62sen30c3q6mqli0kq.apps.googleusercontent.com"
-              buttonText="Sign in"
-              onSuccess={onSuccess}
-              onFailure={error => console.error(error)}
-              render={props => (
-                <Button label="Sign in" onClick={props.onClick} />
-              )}
-            />
+            {!isAuth ? (
+              <GoogleLogin
+                clientId="325129789199-aeblq0vopuh6dc62sen30c3q6mqli0kq.apps.googleusercontent.com"
+                buttonText="Sign in"
+                onSuccess={onSuccess}
+                onFailure={error => console.error(error)}
+                render={props => (
+                  <Button label="Sign in" onClick={props.onClick} />
+                )}
+              />
+            ) : (
+              <Menu>
+                <MenuButton>
+                  <Flex
+                    cursor="pointer"
+                    fontWeight="bold"
+                    justify="center"
+                    align="center"
+                    background="rgba(167,167,167,0.5)"
+                    padding="2"
+                    borderRadius="1rem"
+                    
+
+                  >
+                    <Box w="5" h="5">
+                      <Svg icon="user" />
+                    </Box>
+                    <Box display="flex" direction="row" color="white">
+                      <Text color="white" fontWeight="bold" ml="1">
+                        {user.name}
+                      </Text>
+                    </Box>
+                  </Flex>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Profile</MenuItem>
+                  <MenuDivider/>
+                  <MenuItem onClick={logout} >
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            )}
           </>
         )}
       </Flex>

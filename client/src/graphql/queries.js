@@ -5,3 +5,17 @@ export const ME_QUERY = `
   email
 }}
 `;
+
+
+export const GET_PINS_QUERY = `
+  {
+    getPins {
+        _id
+        title
+        content
+        image
+        longitude
+        latitude
+    }
+  }
+`

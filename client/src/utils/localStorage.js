@@ -21,3 +21,13 @@ export function set(key, json) {
     return false;
   }
 }
+
+export function deleteItem(key, json) {
+  try {
+    window.localStorage.removeItem(key);
+
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
