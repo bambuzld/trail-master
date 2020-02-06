@@ -21,6 +21,7 @@ const Root = () => {
         </MainProvider>
       </Router>
     </TProvider>
+    
   );
 };
 ReactDOM.render(<Root />, document.getElementById('root'));
