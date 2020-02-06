@@ -20,6 +20,9 @@ import { useWindowDimensions } from 'utils/Hooks';
 import { set } from 'utils/localStorage';
 import LocationAutocomplete from 'components/LocationAutocomplete';
 import Svg from 'components/Svg';
+import {useClient} from 'utils/Hooks'
+import {BASE_URL} from 'utils/Hooks/useClient'
+
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
@@ -29,7 +32,7 @@ const [isOpen, setOpen] = useState(false);
   const onSuccess = async googleUser => {
     try {
       const idToken = googleUser.getAuthResponse().id_token;
-      const client = new GraphQLClient('http://localhost:4000/graphql', {
+      const client = new GraphQLClient(BASE_URL, {
         headers: { authorization: idToken }
       });
       const me = await client.request(ME_QUERY);

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Formik, Field, ErrorMessage, Form } from 'formik';
+import { Formik, Field} from 'formik';
 import {
   FormControl,
   FormLabel,
@@ -9,15 +9,14 @@ import {
 } from '@chakra-ui/core';
 
 
-import { GraphQLClient } from 'graphql-request';
 import { MainContext } from 'containers/mainContext';
 import {useNotification} from 'utils/useNotifications'
-import { useMutation } from '@apollo/react-hooks';
+import {useClient} from 'utils/Hooks'
 
 import { CREATE_PIN_MUTATION } from 'graphql/mutations';
 
 const NewPinForm = ({ onClose }) => {
-  // const [createPin,{data}] = useMutation(CREATE_PIN_MUTATION)
+  const client = useClient()
   const {
     map: { draftPin }
   } = useContext(MainContext);
@@ -32,13 +31,6 @@ const NewPinForm = ({ onClose }) => {
       }}
       onSubmit={async (values, actions) => {
         try {
-          const idToken = window.gapi.auth2
-            .getAuthInstance()
-            .currentUser.get()
-            .getAuthResponse().id_token;
-          const client = new GraphQLClient('http://localhost:4000/graphql', {
-            headers: { authorization: idToken }
-          });
           const { title, image, content, longitude, latitude } = values;
           const input = {
             title,
