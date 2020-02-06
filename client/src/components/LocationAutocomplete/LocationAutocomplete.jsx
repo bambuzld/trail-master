@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
-import gps from 'assets/images/gps_orange.svg';
 
 import { MainContext } from 'containers/mainContext';
 
@@ -16,9 +15,8 @@ import { usePosition } from 'utils/Hooks';
 
 import Svg from 'components/Svg';
 
-import './LocationAutocomplete.scss';
 
-import { Flex, Box, Text, Input, PseudoBox, Icon } from '@chakra-ui/core';
+import { Flex, Box, Text, Input, PseudoBox } from '@chakra-ui/core';
 
 const LocationAutocomplete = () => {
   const {
@@ -162,6 +160,8 @@ const LocationAutocomplete = () => {
         roundedTop="2rem"
         roundedBottom={!suggestions && '2rem'}
         p="6"
+        boxShadow="md"
+        textShadow="sm"
       >
         <Input
           placeholder="start typing"
@@ -173,6 +173,8 @@ const LocationAutocomplete = () => {
           value={val}
           ref={inputRef}
           onKeyDown={handleFocusFirstSuggestion}
+          data-testid="location-autocomplete"
+          border="0px"
         />
         <Box
           onClick={!val ? handleUserLocation : handleClearAll}
@@ -183,6 +185,7 @@ const LocationAutocomplete = () => {
           cursor="pointer"
           h="icon"
           w="icon"
+          data-testid={!val? 'user-location' : 'clear-all'}
         >
           {!val ? <Svg icon="gps" /> : <Svg icon="close" />}
         </Box>

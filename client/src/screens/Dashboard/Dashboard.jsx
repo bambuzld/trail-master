@@ -1,11 +1,12 @@
-import React, {  useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { MainContext } from 'containers/mainContext';
 
 import './Dashboard.scss';
 import Header from 'components/Layout/Header';
-import PageContent from 'components/Layout/PageContent';
 import Map from 'components/Map';
+
+import NewPinDrawer from 'screens/Dashboard/components/NewPinDrawer';
 
 import LocationAutocomplete from 'components/LocationAutocomplete';
 
@@ -16,7 +17,6 @@ const Dashboard = () => {
     dispatch,
     map: { userPosition, chosenPosition }
   } = useContext(MainContext);
-
 
   const handleGoBack = () => {
     dispatch({
@@ -30,26 +30,34 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard">
+    <>
+      <Header hasTitle={false} />
       {!userPosition && !chosenPosition ? (
-        <>
-          <Header hasTitle={false} />
-          <PageContent direction="column" justify="center" align="center">
+        <div className="dashboard">
+          <>
             <Box>
-              <Text fontSize={['2xl','3xl','4xl','6xl']} fontWeight="bolder" color="white">
+              <Text
+                fontSize={['2xl', '3xl', '4xl', '6xl']}
+                fontWeight="bolder"
+                color="white"
+              >
                 TRAIL MASTER
               </Text>
             </Box>
             <Box>
-              <Text fontSize={['lg','lg','xl','2xl']} fontWeight="bold" color="brandOrange">
+              <Text
+                fontSize={['lg', 'lg', 'xl', '2xl']}
+                fontWeight="bold"
+                color="brandOrange"
+              >
                 Explore the trails nearby...
               </Text>
-            </Box>{' '}
+            </Box>
             <Box mt="4">
               <LocationAutocomplete />
             </Box>
-          </PageContent>
-        </>
+          </>
+        </div>
       ) : (
         <>
           <Header
@@ -57,10 +65,12 @@ const Dashboard = () => {
             hasAutocomplete={true}
             onBack={handleGoBack}
           />
-          <Map />
+          <div className="dashboard">
+            <Map />
+          </div>
         </>
       )}
-    </div>
+    </>
   );
 };
 

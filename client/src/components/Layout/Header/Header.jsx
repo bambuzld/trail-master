@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import './Header.scss';
 import logo from 'assets/images/logo.svg';
 import Button from 'components/Button';
 
@@ -9,15 +8,6 @@ import {
   Image,
   IconButton,
   Link,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuGroup,
-  MenuDivider,
-  MenuOptionGroup,
-  MenuItemOption,
-  Icon,
   Text
 } from '@chakra-ui/core';
 
@@ -33,8 +23,8 @@ import Svg from 'components/Svg';
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { dispatch } = useContext(MainContext);
-  const { width, height } = useWindowDimensions();
-  const [isOpen, setOpen] = useState(false);
+  const { width } = useWindowDimensions();
+const [isOpen, setOpen] = useState(false);
   
   const onSuccess = async googleUser => {
     try {
@@ -61,12 +51,12 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
         zIndex="222"
         mt="4"
       >
-        <Box onClick={onBack} mt="-1rem" mr="1rem">
+        <Box onClick={onBack} mt="" mr="1rem">
           <IconButton
             icon="arrow-back"
             size="lg"
             fontSize="2.5rem"
-            aria-label="back"
+            aria-label="back-to-dashboard"
             variantColor="white"
           />
         </Box>

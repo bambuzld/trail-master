@@ -3,6 +3,8 @@ import close from 'assets/images/close.svg'
 import back from 'assets/images/arrow-back.svg'
 import logo from 'assets/images/logo-large.svg'
 import menu from 'assets/images/menu.svg'
+import location from 'assets/images/location.svg'
+import addLocation from 'assets/images/add-location.svg'
 
 
 export default {
@@ -10,5 +12,7 @@ export default {
     close,
     back,
     logo,
-    menu
+    menu,
+    addLocation,
+    location
 }

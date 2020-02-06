@@ -6,21 +6,19 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import RouterManager from './utils/RouterManager';
 
-import { ThemeProvider, CSSReset } from '@chakra-ui/core';
-import customTheme from 'assets/customTheme'
-
 import MainProvider from 'containers/mainContext';
+
+import TProvider from 'assets/ThemeProvider'
 
 const Root = () => {
   return (
-    <Router>
-      <ThemeProvider theme={customTheme}>
-      <CSSReset/>
+    <TProvider>
+      <Router>
         <MainProvider>
           <RouterManager />
         </MainProvider>
-      </ThemeProvider>
-    </Router>
+      </Router>
+    </TProvider>
   );
 };
 ReactDOM.render(<Root />, document.getElementById('root'));

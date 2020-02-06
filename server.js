@@ -19,11 +19,10 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   // introspection: true,
-  // playground: true // za playground ukljucit na produkciji
+  // playground: true ,// za playground ukljucit na produkciji
   context: async ({ req }) => {
     let authToken = null;
     let currentUser = null;
-    console.log("uslo");
     try {
       authToken = req.headers.authorization;
       if (authToken) {
