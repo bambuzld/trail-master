@@ -40,9 +40,9 @@ export default {
   },
   shadows: {
     ...theme.shadows,
-    sm: '5px 10px',
-    md: '0.05rem 0.1rem 0.1rem #a7a7a7',
-    lg:'15px 20px'
+    // sm: '5px 10px',
+    // md: '0.05rem 0.1rem 0.1rem #a7a7a7',
+    // lg:'15px 20px'
   },
   colors: {
     ...theme.colors,

@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/core';
 import NewPinForm from 'screens/Dashboard/components/NewPinForm'
 
-const NewPinDrawer = ({isOpen}) => {
-  const { onClose, onOpen } = useDisclosure();
+const NewPinDrawer = ({isOpen, onClose}) => {
+  // const { onClose, onOpen } = useDisclosure();
   return (
     <>
       {/* <Button onClick={onOpen}>
@@ -32,7 +32,7 @@ const NewPinDrawer = ({isOpen}) => {
         <DrawerCloseButton />
         <DrawerHeader>Create new pin</DrawerHeader>
 
-        <DrawerBody><NewPinForm/></DrawerBody>
+        <DrawerBody><NewPinForm onClose={onClose}/></DrawerBody>
 
         {/* <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>

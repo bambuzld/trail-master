@@ -19,6 +19,7 @@ const Map = () => {
   const [loading, setLoading] = useState(true);
   const [pop, setPop] = useState(false);
   const [showDrawer, setDrawer] = useState(false);
+  
   const {
     map: { userPosition, chosenPosition, draftPin },
     dispatch
@@ -139,7 +140,7 @@ const Map = () => {
         )}
 
 
-        <NewPinDrawer isOpen={showDrawer}/>
+        <NewPinDrawer isOpen={showDrawer} onClose={()=>setDrawer(false)}/>
         
       </ReactMapGL>
     </>

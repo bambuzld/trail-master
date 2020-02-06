@@ -4,6 +4,8 @@ import userContext from 'containers/User/User.context'
 import UserReducer, {key as userKey} from 'containers/User/User.reducer'
 import mapContext from 'containers/Map/Map.context'
 import MapReducer, {key as mapKey} from 'containers/Map/Map.reducer'
+import notificationsContext from 'containers/Notifications/Notifications.context'
+import NotificationsReducer, {key as notificationsKey} from 'containers/Notifications/Notifications.reducer'
 import combineReducer from 'utils/combineReducer'
 
 
@@ -15,11 +17,13 @@ export const MainContext = createContext()
 const MainProvider = ({children}) => {
   const initialValue = {
     [userKey]:userContext,
-    [mapKey]:mapContext
+    [mapKey]:mapContext,
+    [notificationsKey]:notificationsContext,
   }
   const rootReducer = combineReducer({
     [userKey]: UserReducer,
-    [mapKey]: MapReducer
+    [mapKey]: MapReducer,
+    [notificationsKey]: NotificationsReducer,
   })
   const [state,dispatch] = useReducer(rootReducer,initialValue)
 
@@ -30,6 +34,9 @@ const MainProvider = ({children}) => {
     },
     [mapKey]:{
       ...state[mapKey]
+    },
+    [notificationsKey]:{
+      ...state[notificationsKey]
     }
   }
 

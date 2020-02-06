@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import RouterManager from './utils/RouterManager';
 
 import MainProvider from 'containers/mainContext';
+import Notifications from 'components/Notifications'
 
 import TProvider from 'assets/ThemeProvider'
 
@@ -16,6 +17,7 @@ const Root = () => {
       <Router>
         <MainProvider>
           <RouterManager />
+          <Notifications/>
         </MainProvider>
       </Router>
     </TProvider>
