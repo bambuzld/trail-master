@@ -13,7 +13,7 @@ const RouterManager = () => {
       <Switch>
       <Route Route key={0} path="/dashboard" exact component={Dashboard} />
       <Route Route key={0} path="/profile" exact component={ProfilePage} />
-      {/* {renderRedirect()} */}
+      {renderRedirect()}
     </Switch>
   );
 };
