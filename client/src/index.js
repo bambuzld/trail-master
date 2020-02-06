@@ -9,7 +9,7 @@ import RouterManager from './utils/RouterManager';
 import MainProvider from './containers/mainContext';
 import Notifications from './components/Notifications'
 
-import TProvider from 'assets/ThemeProvider'
+import TProvider from './assets/ThemeProvider'
 
 const Root = () => {
   return (
