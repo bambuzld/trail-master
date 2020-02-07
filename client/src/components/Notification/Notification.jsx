@@ -1,10 +1,9 @@
 import React,{useEffect} from 'react';
 
-import { useToast, Box } from '@chakra-ui/core';
+import { useToast } from '@chakra-ui/core';
 
 const Notification = ({ status, text, duration }) => {
   const toast  = useToast();
-  console.log('toast', toast);
   useEffect(() => {
     toast({
       title: status,

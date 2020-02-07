@@ -21,7 +21,7 @@ const NewPinForm = ({ onClose }) => {
     map: { draftPin }
   } = useContext(MainContext);
 
-  const [payload,addNotification] = useNotification()
+  const [addNotification] = useNotification()
   const { longitude, latitude } = draftPin;
   return (
     <Formik

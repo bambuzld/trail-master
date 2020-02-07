@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import  { useContext, useState, useEffect, useCallback } from 'react';
 
 import { MainContext } from 'containers/mainContext';
 
@@ -7,7 +7,7 @@ export const useNotification = () => {
   const [payload, setPayload] = useState(null);
   const addNotification = useCallback(pl => {
     setPayload(pl);
-  },[payload]);
+  },[]);
 
   useEffect(() => {
     if (payload!==null) {
@@ -28,7 +28,7 @@ export const useNotification = () => {
         }, payload.duration);
       }
     }
-  }, [payload]);
+  }, [notifications,dispatch,payload]);
 
-  return [payload, addNotification];
+  return [addNotification];
 };

@@ -20,7 +20,7 @@ const Map = () => {
     longitude: 15,
     zoom: 12
   });
-  const [data,addNotification] = useNotification()
+  const [addNotification] = useNotification()
   const [loading, setLoading] = useState(true);
   const [pop, setPop] = useState(true);
   const [showDrawer, setDrawer] = useState(false);
@@ -83,8 +83,8 @@ const Map = () => {
       {loading && <PageLoader />}
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        width="100vw"
-        height="100vh"
+        width="100%"
+        height="100%"
         // mapStyle="mapbox://styles/mapbox/satellite-streets-v11" //satellite and streets view
         mapStyle="mapbox://styles/mapbox/outdoors-v11"
         {...viewport}
