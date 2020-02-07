@@ -66,7 +66,7 @@ const LocationAutocomplete = () => {
         active = document.activeElement;
       });
     }
-  }, [suggestionsRef, chosenIndex]);
+  }, [suggestionsRef]);
 
   const handleClearAll = () => {
     setVal('');

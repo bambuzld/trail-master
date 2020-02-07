@@ -12,9 +12,9 @@ export const useClient = () => {
   useEffect(() => {
     if (!get('Bearer')) {
       const token = window.gapi.auth2
-        .getAuthInstance()
-        .currentUser.get()
-        .getAuthResponse().id_token;
+      .getAuthInstance()
+      .currentUser.get()
+      .getAuthResponse().id_token;
       if (token) {
         set('Bearer', token);
         setIdToken(token);

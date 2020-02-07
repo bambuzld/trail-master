@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import logo from 'assets/images/logo.svg';
-import Button from 'components/Button';
+import Login from 'components/Auth/Login';
+import Logout from 'components/Auth/Logout';
 
 import { Flex, Box, Image, IconButton, Link, Text } from '@chakra-ui/core';
 
@@ -12,58 +13,17 @@ import {
   MenuDivider
 } from '@chakra-ui/core';
 
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { GraphQLClient } from 'graphql-request';
-
-import { MainContext } from 'containers/mainContext';
-import { ME_QUERY } from 'graphql/queries';
-import { useWindowDimensions } from 'utils/Hooks';
-import { set, get, deleteItem } from 'utils/localStorage';
+import { useWindowDimensions, useAuth } from 'utils/Hooks';
 import LocationAutocomplete from 'components/LocationAutocomplete';
 import Svg from 'components/Svg';
-import { BASE_URL } from 'utils/Hooks/useClient';
-import { useNotification } from 'utils/useNotifications';
 
 const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
-  const { dispatch } = useContext(MainContext);
   const { width } = useWindowDimensions();
   const [isOpen, setOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState(null);
-  const [ addNotification] = useNotification();
+  const [isAuth, user] = useAuth();
+  console.log('isAuth', isAuth);
+  console.log('user', user);
 
-  useEffect(() => {
-    const currentUser = get('currentUser');
-    if (currentUser) {
-      setIsAuth(true);
-      setUser(currentUser);
-    }
-  }, [isAuth]);
-
-  const logout = useCallback(() => {
-    deleteItem('Bearer');
-    deleteItem('currentUser');
-    setIsAuth(false);
-    setUser(null);
-  }, []);
-  const onSuccess = async googleUser => {
-    try {
-      console.log('uslo');
-      const idToken = googleUser.getAuthResponse().id_token;
-      const client = new GraphQLClient(BASE_URL, {
-        headers: { authorization: idToken }
-      });
-      const me = await client.request(ME_QUERY);
-      console.log('me', me);
-      dispatch({ type: 'LOGIN_USER', payload: me });
-      dispatch({ type: 'IS_LOGGED_IN', payload: googleUser.isSignedIn() });
-      set('Bearer', idToken);
-      set('currentUser', me.me);
-      setIsAuth(googleUser.isSignedIn());
-    } catch (error) {
-      console.error(error);
-    }
-  };
   if (hasAutocomplete) {
     return (
       <Flex
@@ -157,15 +117,8 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
                   </Text>
                 </Box>
                 <Box>
-                  <GoogleLogin
-                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                    buttonText="Sign in"
-                    onSuccess={onSuccess}
-                    onFailure={error => console.error(error)}
-                    render={props => (
-                      <Button label="Sign in" onClick={props.onClick} />
-                    )}
-                  />
+                  lolo
+                  <Login />
                 </Box>
               </Flex>
             )}
@@ -181,21 +134,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
               </Link>
             </Box>
             {!isAuth ? (
-              <GoogleLogin
-                clientId="325129789199-aeblq0vopuh6dc62sen30c3q6mqli0kq.apps.googleusercontent.com"
-                buttonText="Sign in"
-                onSuccess={onSuccess}
-                onFailure={error =>
-                  addNotification({
-                    status: 'error',
-                    text: `Login error`,
-                    duration: 3000
-                  })
-                }
-                render={props => (
-                  <Button label="Sign in" onClick={props.onClick} />
-                )}
-              />
+              <Login />
             ) : (
               <Menu>
                 <MenuButton>
@@ -222,20 +161,7 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
                   <MenuItem>Profile</MenuItem>
                   <MenuDivider />
                   <MenuItem>
-                    <GoogleLogout
-                      as={GoogleLogout}
-                      render={props => <p onClick={props.onClick}>Logout</p>}
-                      clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                      onLogoutSuccess={logout}
-                      disabledStyle
-                      onFailure={error =>
-                        addNotification({
-                          status: 'error',
-                          text: `Logout error`,
-                          duration: 3000
-                        })
-                      }
-                    />
+                    <Logout />
                   </MenuItem>
                 </MenuList>
               </Menu>

@@ -28,7 +28,7 @@ export const useNotification = () => {
         }, payload.duration);
       }
     }
-  }, [notifications,dispatch,payload]);
+  }, [dispatch,payload]);
 
   return [addNotification];
 };
