@@ -129,6 +129,7 @@ const Map = () => {
               longitude={pin.longitude}
               offsetLeft={-19}
               offsetTop={-37}
+              key={pin._id}
             >
               <Box w="1.5rem" h="1.5rem" onClick={() => setPop(true)}>
                 <Svg icon="addLocation" />

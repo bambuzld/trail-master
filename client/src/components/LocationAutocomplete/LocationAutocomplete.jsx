@@ -12,6 +12,7 @@ import { MainContext } from 'containers/mainContext';
 
 import { KeyCodes } from 'constants/keyCodes';
 import { usePosition } from 'utils/Hooks';
+import { useNotification } from 'utils/useNotifications';
 
 import Svg from 'components/Svg';
 
@@ -27,8 +28,9 @@ const LocationAutocomplete = () => {
   const suggestionRef = useRef(null);
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
-  const { latitude, longitude, error } = usePosition(true);
+  const { latitude, longitude, error } = usePosition(false);
   const [chosenIndex, setChosenIndex] = useState(null);
+  const [addNotification] = useNotification()
 
   const handleClickOutside = useCallback(event => {
     setSuggestions(null);
@@ -106,14 +108,23 @@ const LocationAutocomplete = () => {
   );
 
   const handleUserLocation = useCallback(() => {
-    dispatch({
-      type: 'SET_USER_POSITION',
-      payload: { latitude: latitude, longitude: longitude }
-    });
-    dispatch({
-      type: 'SET_CHOSEN_POSITION',
-      payload: null
-    });
+    if(latitude && longitude){
+      dispatch({
+        type: 'SET_USER_POSITION',
+        payload: { latitude: latitude, longitude: longitude }
+      });
+      dispatch({
+        type: 'SET_CHOSEN_POSITION',
+        payload: null
+      });
+    }
+    else{
+      addNotification({
+        status: 'error',
+        text: `Location error, unable to get yout location. Please, try again.`,
+        duration: 3000
+      })
+    }
   }, [dispatch, latitude, longitude]);
 
   useEffect(() => {

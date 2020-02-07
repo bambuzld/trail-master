@@ -8,17 +8,19 @@ import Dashboard from '../../screens/Dashboard';
 import ProfilePage from 'screens/ProfilePage';
 
 //initial redirect
-const renderRedirect = () => <Redirect to="/dashboard" exact />;
+const renderRedirect = isAuth => <Redirect to="/dashboard" exact />;
+
+
 
 const RouterManager = () => {
   const [user,isAuth] = useAuth()
-  console.log('user,auth', user,isAuth);
+  
 
   return (
       <Switch>
       <Route Route key={0} path="/dashboard" exact component={Dashboard} />
       <Route Route key={0} path="/profile" exact component={ProfilePage} />
-      {/* {renderRedirect()} */}
+      {renderRedirect()}
     </Switch>
   );
 };

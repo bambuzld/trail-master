@@ -3,13 +3,14 @@
 import {useState, useEffect} from 'react';
 
 const defaultSettings = {
-  enableHighAccuracy: false,
+  enableHighAccuracy: true,
   timeout: Infinity,
   maximumAge: 0,
 };
 
 export const usePosition = (watch = false, settings = defaultSettings) => {
   const [position, setPosition] = useState({});
+  console.log('position', position);
   const [error, setError] = useState(null);
 
   const onChange = ({coords, timestamp}) => {

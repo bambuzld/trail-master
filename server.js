@@ -11,8 +11,11 @@ const { findOrCreateUser } = require("./controllers/userController");
 //connect to mongo db
 
 mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true })
-  .then(() => console.log("---db connected successfully---"))
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('---db connected successfully---'))
   .catch(error => console.log(error));
 
 const server = new ApolloServer({
