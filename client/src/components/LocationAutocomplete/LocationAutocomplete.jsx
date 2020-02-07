@@ -15,7 +15,6 @@ import { usePosition } from 'utils/Hooks';
 
 import Svg from 'components/Svg';
 
-
 import { Flex, Box, Text, Input, PseudoBox } from '@chakra-ui/core';
 
 const LocationAutocomplete = () => {
@@ -66,7 +65,7 @@ const LocationAutocomplete = () => {
         active = document.activeElement;
       });
     }
-  }, [suggestionsRef, chosenIndex]);
+  }, [suggestionsRef]);
 
   const handleClearAll = () => {
     setVal('');
@@ -185,7 +184,7 @@ const LocationAutocomplete = () => {
           cursor="pointer"
           h="icon"
           w="icon"
-          data-testid={!val? 'user-location' : 'clear-all'}
+          data-testid={!val ? 'user-location' : 'clear-all'}
         >
           {!val ? <Svg icon="gps" /> : <Svg icon="close" />}
         </Box>
@@ -208,17 +207,20 @@ const LocationAutocomplete = () => {
                   onClick={() => handleLocation(index)}
                   data-key={index}
                   tabIndex={index}
-                  // zIndex="999"
+                  zIndex="999"
                   ref={suggestionRef}
                   roundedBottom={index === suggestions.length - 1 && '2rem'}
                   _hover={{ bg: 'lighterGrey' }}
                   _focus={{ bg: 'lighterGrey' }}
+                  display="flex"
+                  alignItems="center"
+                  py="1"
                 >
                   <Text
                     mb={index === suggestions.length - 1 && '4'}
                     color="lightGrey"
                     cursor="pointer"
-                    pt="2"
+                    // pt="2"
                     px="10"
                     fontSize="lg"
                     fontWeight="bold"

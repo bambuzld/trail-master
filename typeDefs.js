@@ -9,7 +9,8 @@ module.exports = gql`
   }
 
   type Query {
-    me: User
+    me: User,
+    getPins: [Pin!]
   }
 
   type Pin {

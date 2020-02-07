@@ -1,26 +1,26 @@
-import React, { useContext, useState, useEffect } from 'react';
+import  { useContext, useState, useEffect, useCallback } from 'react';
 
 import { MainContext } from 'containers/mainContext';
 
 export const useNotification = () => {
   const { notifications: {notifications}, dispatch } = useContext(MainContext);
   const [payload, setPayload] = useState(null);
-  console.log('payload', payload);
-  const addNotification = pl => {
-    console.log(pl);
+  const addNotification = useCallback(pl => {
     setPayload(pl);
-  };
+  },[]);
 
   useEffect(() => {
-    if (payload) {
-      console.log('payload', payload);
-      console.log('uslo');
+    if (payload!==null) {
       const updatedPayload = {
         id: `${payload.status}${payload.text}`,
         ...payload
       };
-      console.log('updatedPayload', updatedPayload);
-      dispatch({ type: 'ADD_NOTIFICATION', payload: updatedPayload });
+      if (payload !== null) {
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: updatedPayload
+        });
+      }
       if (notifications.length > 0) {
         setTimeout(() => {
           const id = `${payload.status}${payload.text}`;
@@ -28,7 +28,7 @@ export const useNotification = () => {
         }, payload.duration);
       }
     }
-  }, [payload]);
+  }, [dispatch,payload]);
 
-  return [payload, addNotification];
+  return [addNotification];
 };

@@ -5,12 +5,10 @@ import { MainContext } from 'containers/mainContext';
 import './Dashboard.scss';
 import Header from 'components/Layout/Header';
 import Map from 'components/Map';
-
-import NewPinDrawer from 'screens/Dashboard/components/NewPinDrawer';
-
 import LocationAutocomplete from 'components/LocationAutocomplete';
 
 import { Text, Box } from '@chakra-ui/core';
+
 
 const Dashboard = () => {
   const {
