@@ -35,13 +35,14 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
         zIndex="222"
         mt="4"
       >
-        <Box onClick={onBack} mt="" mr="1rem">
+        <Box onClick={onBack} mt="1rem" mr="1rem" backgroundColor="rgba(167,167,167,0.4)"  borderRadius="2.5rem">
           <IconButton
             icon="arrow-back"
             size="lg"
             fontSize="2.5rem"
             aria-label="back-to-dashboard"
             variantColor="white"
+            text="md"
           />
         </Box>
         <Box>

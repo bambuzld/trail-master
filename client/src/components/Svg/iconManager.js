@@ -6,6 +6,7 @@ import menu from 'assets/images/menu.svg'
 import location from 'assets/images/location.svg'
 import user from 'assets/images/user.svg'
 import addLocation from 'assets/images/add-location.svg'
+import trail from 'assets/images/trail.svg'
 
 
 export default {
@@ -14,7 +15,8 @@ export default {
     back,
     logo,
     menu,
-    addLocation,
+    trail,
     location,
+    addLocation,
     user
 }
