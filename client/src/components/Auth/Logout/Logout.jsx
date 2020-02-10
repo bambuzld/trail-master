@@ -8,23 +8,24 @@ import {MainContext} from 'containers/mainContext'
 
 import { deleteItem } from 'utils/localStorage';
 
-const Logout = ({}) => {
+const Logout = () => {
+  console.log('render logout')
   const [addNotification] = useNotification();
   const {dispatch} = useContext(MainContext)
 
-  const logout = useCallback(() => {
+  const logout = () => {
+  console.log('logout', logout);
 
     dispatch({ type: 'LOGIN_USER', payload: null });
     dispatch({ type: 'IS_LOGGED_IN', payload: false });
 
     deleteItem('Bearer');
     deleteItem('currentUser');
-  }, []);
+  }
 
   return (
     <GoogleLogout
       clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-      buttonText="Sign in"
       onLogoutSuccess={logout}
       onFailure={error =>
         addNotification({

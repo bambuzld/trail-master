@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
+import ReactMapGL, {
+  NavigationControl,
+  Marker,
+  StaticMap,
+  Popup
+} from 'react-map-gl';
 
 import { MainContext } from 'containers/mainContext';
 import { GET_PINS_QUERY } from 'graphql/queries';
@@ -9,14 +14,10 @@ import Svg from 'components/Svg';
 import Popover from 'components/Popover';
 import Login from 'components/Auth/Login';
 import NewPinDrawer from 'screens/Dashboard/components/NewPinDrawer';
-import { Box, Button} from '@chakra-ui/core';
+import { Box, Button } from '@chakra-ui/core';
 
 import { useNotification } from 'utils/useNotifications';
 import { useClient, useAuth } from 'utils/Hooks';
-
-
-
-
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -26,7 +27,8 @@ const Map = () => {
   });
   const [addNotification] = useNotification();
   const [loading, setLoading] = useState(true);
-  const [pop, setPop] = useState(true);
+  const [pop, setPop] = useState(false);
+  const [trailInfoPopup, setTrailInfoPopup] = useState({});
   const [showDrawer, setDrawer] = useState(false);
   const [user, isAuth] = useAuth();
 
@@ -37,10 +39,14 @@ const Map = () => {
     dispatch
   } = useContext(MainContext);
 
+  const handleDrawerOpen = () => {
+    setDrawer(true);
+    setPop(false);
+  };
+
   const handleMapClick = useCallback(
     ({ lngLat, leftButton }) => {
-      console.log('leftButton', leftButton);
-      console.log('lngLat', lngLat);
+      setPop(true);
       if (!leftButton) return;
       const [longitude, latitude] = lngLat;
       dispatch({
@@ -98,7 +104,8 @@ const Map = () => {
         {...viewport}
         onLoad={() => setLoading(false)}
         onViewportChange={newViewport => setViewport(newViewport)}
-        onClick={handleMapClick}
+        onDblClick={handleMapClick}
+        doubleClickZoom={false}
         //disable map when draft pin is present to prevent setting pin whereever user clicks on popover
       >
         <div style={{ position: 'absolute', bottom: 32, right: 100 }}>
@@ -124,17 +131,55 @@ const Map = () => {
 
         {pins.length > 0 &&
           pins.map(pin => (
-            <Marker
-              latitude={pin.latitude}
-              longitude={pin.longitude}
-              offsetLeft={-19}
-              offsetTop={-37}
-              key={pin._id}
-            >
-              <Box w="1.5rem" h="1.5rem" onClick={() => setPop(true)}>
-                <Svg icon="addLocation" />
-              </Box>
-            </Marker>
+            <>
+              <Marker
+                latitude={pin.latitude}
+                longitude={pin.longitude}
+                offsetLeft={-19}
+                offsetTop={-37}
+                key={pin._id}
+              >
+                <Popover
+                  isOpen={trailInfoPopup[pin._id]}
+                  onClose={() =>
+                    setTrailInfoPopup({
+                      ...trailInfoPopup,
+                      [pin._id]: false
+                    })
+                  }
+                  headerText={pin.title}
+                  popoverTrigger={
+                    <Box
+                      w="1.5rem"
+                      h="1.5rem"
+                      onClick={() =>
+                        setTrailInfoPopup({
+                          ...trailInfoPopup,
+                          [pin._id]: true
+                        })
+                      }
+                      cursor="pointer"
+                    >
+                      <Svg icon="trail" />
+                    </Box>
+                  }
+                  popoverBody={
+                    <Box minW="64">
+                      <Box>{pin.content}</Box>
+                      <Button
+                        mt={4}
+                        type="submit"
+                        color="brandOrange"
+                        mr={4}
+                        onClick={() => setDrawer(true)}
+                      >
+                        Go to Trail
+                      </Button>
+                    </Box>
+                  }
+                />
+              </Marker>
+            </>
           ))}
 
         {draftPin && !showDrawer && (
@@ -162,7 +207,7 @@ const Map = () => {
                       type="submit"
                       color="brandOrange"
                       mr={4}
-                      onClick={() => setDrawer(true)}
+                      onClick={handleDrawerOpen}
                     >
                       Yes
                     </Button>
@@ -190,10 +235,6 @@ const Map = () => {
                 }
                 popoverBody={
                   <Box>
-                    {/* <Box>
-                      <Login inPopup />
-                    </Box> */}
-
                     <Login inPopup />
                     <Button
                       mt={4}
