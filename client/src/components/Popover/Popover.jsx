@@ -21,7 +21,7 @@ const PopoverComp = ({
   return (
     <Popover isOpen={isOpen} onClose={onClose}>
       <PopoverTrigger>{popoverTrigger}</PopoverTrigger>
-      <PopoverContent zIndex={4} w={width}>
+      <PopoverContent zIndex={999} w={width}>
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader>{headerText}</PopoverHeader>

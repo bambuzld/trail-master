@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Formik, Field} from 'formik';
+import { Formik, Field } from 'formik';
 import {
   FormControl,
   FormLabel,
@@ -8,21 +8,22 @@ import {
   Button
 } from '@chakra-ui/core';
 
-
 import { MainContext } from 'containers/mainContext';
-import {useNotification} from 'utils/useNotifications'
-import {useClient} from 'utils/Hooks'
+import { useNotification } from 'utils/useNotifications';
+import { useClient } from 'utils/Hooks';
 
 import { CREATE_PIN_MUTATION } from 'graphql/mutations';
+import { GET_PINS_QUERY } from 'graphql/queries';
 
 const NewPinForm = ({ onClose }) => {
-  const client = useClient()
+  const client = useClient();
   const {
-    map: { draftPin }
+    map: { draftPin },
+    dispatch
   } = useContext(MainContext);
 
-  const [addNotification] = useNotification()
-  const { longitude, latitude } = draftPin;
+  const [addNotification] = useNotification();
+  const { longitude, latitude } = draftPin || {};
   return (
     <Formik
       initialValues={{
@@ -40,17 +41,31 @@ const NewPinForm = ({ onClose }) => {
             longitude: parseFloat(longitude)
           };
           await client.request(CREATE_PIN_MUTATION, input);
+          const pins = await client.request(GET_PINS_QUERY);
+          dispatch({ type: 'GET_PINS', payload: pins.getPins });
           onClose();
-          addNotification({status:'success',text: 'Pin added successfully',duration: 3000})
+          addNotification({
+            status: 'success',
+            text: 'Pin added successfully',
+            duration: 3000
+          });
+          dispatch({
+            type: 'UPDATE_DRAFT_PIN',
+            payload: null
+          });
         } catch (e) {
-          addNotification({status:'error',text: 'There was a problem with adding pin',duration: 3000})
+          addNotification({
+            status: 'error',
+            text: 'There was a problem with adding pin',
+            duration: 3000
+          });
           console.error(e);
         }
       }}
     >
       {props => (
         <form onSubmit={props.handleSubmit}>
-          <Field name="title" >
+          <Field name="title">
             {({ field, form }) => (
               <FormControl isInvalid={form.errors.title && form.touched.title}>
                 <FormLabel htmlFor="title">Pin title</FormLabel>
