@@ -121,7 +121,7 @@ const LocationAutocomplete = () => {
     else{
       addNotification({
         status: 'error',
-        text: `Location error, unable to get yout location. Please, try again.`,
+        text: `Location error, unable to get yout location. Please check if location is enabled.`,
         duration: 3000
       })
     }
@@ -170,7 +170,7 @@ const LocationAutocomplete = () => {
         roundedTop="2rem"
         roundedBottom={!suggestions && '2rem'}
         p="6"
-        boxShadow="md"
+        boxShadow="xl"
         textShadow="sm"
       >
         <Input
