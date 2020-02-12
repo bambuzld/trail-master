@@ -24,20 +24,24 @@ export const CREATE_PIN_MUTATION = `
 // }
 
 export const CREATE_TRAIL_MUTATION = `
-mutation($name: String!, $description: String!, $type: String!, $level: String!, $path: [[Float]]!, $elevation: [Float]!  ){
+mutation($name: String!, $description: String!, $type: String!, $level: String!, $path: [[Float]]!, $elevation: [Float]!, $geoJson: GeoJSONInput!){
         createTrail(input:{
             name:$name,
             description:$description,
             level: $level,
             type: $type,
             path: $path,
-            elevation: $elevation
+            elevation: $elevation,
+            geoJson: $geoJson
             }){
         _id
         name
         description
         elevation
         path
+        geoJson{
+            type
+        }
         }
     }
 `;

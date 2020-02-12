@@ -897,6 +897,10 @@ gcp-metadata@^3.3.0:
     gaxios "^2.1.0"
     json-bigint "^0.3.0"
 
+geojson-validation@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/geojson-validation/-/geojson-validation-0.2.1.tgz#7f9c9a3f7f967ae8e267940fda14478943342f2f"
+
 get-stream@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-3.0.0.tgz#8e943d1358dc37555054ecbe2edb05aa174ede14"
@@ -959,6 +963,12 @@ graphql-extensions@^0.10.9:
     "@apollographql/apollo-tools" "^0.4.0"
     apollo-server-env "^2.4.3"
     apollo-server-types "^0.2.10"
+
+graphql-geojson-scalar-types@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/graphql-geojson-scalar-types/-/graphql-geojson-scalar-types-0.0.5.tgz#819f77668cc332fe2360788d69a4dd20ce7fdc11"
+  dependencies:
+    geojson-validation "^0.2.1"
 
 graphql-subscriptions@^1.0.0:
   version "1.1.0"

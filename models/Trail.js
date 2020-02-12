@@ -8,6 +8,23 @@ const TrailSchema = new mongoose.Schema({
     length: String,
     path: [[Number]],
     elevation: [Number],
+    geoJson: {
+        type: {
+            type: String
+        },
+        features: [
+            {
+                type:{type:  String},
+                // properties: {
+                //     name: String
+                // },
+                geometry: {
+                    coordinates: [[Number]],
+                    type: {type: String}
+                }
+            }
+        ]
+    }
 
 })
 

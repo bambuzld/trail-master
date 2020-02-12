@@ -32,10 +32,10 @@ export default function reducer(state, { type, payload }) {
           ...state,
           draftPin: payload
         };
-      case "SET_TRAIL_PATH":
+      case "SET_TRAIL":
         return {
           ...state,
-          trailPath: payload
+          trail: payload
         };
       case "GET_PINS":
         return {

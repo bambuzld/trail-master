@@ -22,9 +22,7 @@ import { MainContext } from 'containers/mainContext';
 import { useNotification } from 'utils/useNotifications';
 import { useClient } from 'utils/Hooks';
 
-import { CREATE_PIN_MUTATION } from 'graphql/mutations';
 import { CREATE_TRAIL_MUTATION } from 'graphql/mutations';
-import { GET_PINS_QUERY } from 'graphql/queries';
 
 import getDistance from 'geolib/es/getDistance';
 
@@ -67,16 +65,26 @@ const getElevationDataForTrailPath = async locations => {
   }
 };
 
+
+
+
+
+
+
 const NewPinForm = ({ onClose }) => {
   const client = useClient();
   const {
-    map: { draftPin, trailPath },
+    map: { draftPin, trail },
     dispatch
   } = useContext(MainContext);
   const [addNotification] = useNotification();
   const [elevationData, setElevationData] = useState(null);
   const [elevationDiff, setElevationDiff] = useState(null);
   const { longitude, latitude } = draftPin || {};
+
+  const trailPath = useMemo(()=>{
+    return trail.features[0].geometry.coordinates
+  },[trail])
 
   const totalDistance = useMemo(() => {
     return getTotalDistance(trailPath);
@@ -96,8 +104,8 @@ const NewPinForm = ({ onClose }) => {
         setElevationDiff(Math.abs(lastPoint - firstPoint));
       })
       .catch(err => console.error(err));
-  }, []);
-  useEffect(() => {}, [trailPath]);
+  }, [trailPath]);
+  // useEffect(() => {}, [trailPath]);
 
   if (!elevationDiff) return null;
   return (
@@ -115,7 +123,8 @@ const NewPinForm = ({ onClose }) => {
             level,
             type,
             path: trailPath,
-            elevation: elevationData.map(record=>record.elevation)
+            elevation: elevationData.map(record=>record.elevation),
+            geoJson: trail
           };
           await client.request(CREATE_TRAIL_MUTATION, input);
           onClose();
