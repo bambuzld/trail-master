@@ -18,29 +18,72 @@ import { Box, Button } from '@chakra-ui/core';
 
 import { useNotification } from 'utils/useNotifications';
 import { useClient, useAuth } from 'utils/Hooks';
+import { KeyCodes } from 'constants/keyCodes';
+
+import { Editor, EditorModes } from 'react-map-gl-draw';
+
+const MODES = [
+  { id: EditorModes.EDITING, text: 'Select and Edit Feature' },
+  { id: EditorModes.DRAW_POINT, text: 'Draw Point' },
+  { id: EditorModes.DRAW_PATH, text: 'Draw Polyline' },
+  { id: EditorModes.DRAW_POLYGON, text: 'Draw Polygon' },
+  { id: EditorModes.DRAW_RECTANGLE, text: 'Draw Rectangle' }
+];
+
+const DEFAULT_VIEWPORT = {
+  // width: 800,
+  // height: 600,
+  longitude: 46,
+  latitude: 15,
+  zoom: 12
+};
 
 const Map = () => {
-  const [viewport, setViewport] = useState({
-    latitude: 46,
-    longitude: 15,
-    zoom: 12
-  });
+  const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [addNotification] = useNotification();
   const [loading, setLoading] = useState(true);
   const [pop, setPop] = useState(false);
   const [trailInfoPopup, setTrailInfoPopup] = useState({});
   const [showDrawer, setDrawer] = useState(false);
   const [user, isAuth] = useAuth();
+  const [selectedMode, setSelectedMode] = useState(EditorModes.READ_ONLY);
+  const [trailPath,setTrailPath] = useState([])
 
   const client = useClient();
+
+
+  // const _switchMode = evt => {
+  //   const selectedMode = evt.target.id;
+  //   setSelectedMode({
+  //     selectedMode: selectedMode === selectedMode ? null : selectedMode
+  //   });
+  // };
+
+  // const  _renderToolbar = () => (
+  //   <div style={{ position: 'absolute', top: 0, right: 0, maxWidth: '320px' }}>
+  //     <select onChange={_switchMode}>
+  //       <option value="">--Please choose a mode--</option>
+  //       {MODES.map(mode => (
+  //         <option value={mode.id}>{mode.text}</option>
+  //       ))}
+  //     </select>
+  //   </div>
+  // );
 
   const {
     map: { userPosition, chosenPosition, draftPin, pins },
     dispatch
   } = useContext(MainContext);
 
-  const handleDrawerOpen = () => {
-    setDrawer(true);
+
+  const onTrailPathUpdate  = e => {
+    const newCoordinates = e.data[0].geometry.coordinates
+    setTrailPath(newCoordinates)
+  }
+
+  const handleStartDrawing = () => {
+    setSelectedMode(EditorModes.DRAW_PATH)
+    // setDrawer(true);
     setPop(false);
   };
 
@@ -73,8 +116,18 @@ const Map = () => {
     }
   }, []);
 
+  const handleFinishDrawing = e => {
+    if (e.keyCode === KeyCodes.ESCAPE) {
+      dispatch({type: "SET_TRAIL_PATH",payload: trailPath})
+      setSelectedMode(EditorModes.READ_ONLY)
+      setDrawer(true)
+    }
+  }
+
   useEffect(() => {
     getPins();
+    document.addEventListener('keydown', handleFinishDrawing, false);
+
     if (userPosition) {
       setViewport({
         latitude: userPosition.latitude,
@@ -89,8 +142,13 @@ const Map = () => {
         zoom: 12
       });
     }
-    return () => {};
-  }, [userPosition, chosenPosition]);
+    return () => {
+      document.removeEventListener('keydown', handleFinishDrawing, false);
+  
+    };
+  }, [userPosition, chosenPosition,trailPath]);
+
+  
 
   return (
     <>
@@ -108,6 +166,8 @@ const Map = () => {
         doubleClickZoom={false}
         //disable map when draft pin is present to prevent setting pin whereever user clicks on popover
       >
+        <Editor clickRadius={12} mode={selectedMode} onSelect={e=>console.log(e)} onUpdate={onTrailPathUpdate} />
+        {/* {_renderToolbar()} */}
         <div style={{ position: 'absolute', bottom: 32, right: 100 }}>
           <NavigationControl />
         </div>
@@ -129,7 +189,7 @@ const Map = () => {
           </Marker>
         )}
 
-        {pins.length > 0 &&
+        {/* {pins.length > 0 &&
           pins.map(pin => (
             <>
               <Marker
@@ -180,7 +240,7 @@ const Map = () => {
                 />
               </Marker>
             </>
-          ))}
+          ))} */}
 
         {draftPin && !showDrawer && (
           <Marker
@@ -207,7 +267,7 @@ const Map = () => {
                       type="submit"
                       color="brandOrange"
                       mr={4}
-                      onClick={handleDrawerOpen}
+                      onClick={handleStartDrawing}
                     >
                       Yes
                     </Button>
@@ -252,7 +312,7 @@ const Map = () => {
           </Marker>
         )}
 
-        <NewPinDrawer isOpen={showDrawer} onClose={() => setDrawer(false)} />
+        <NewPinDrawer isOpen={showDrawer} onClose={() => setDrawer(false)} trailPath={trailPath} />
       </ReactMapGL>
     </>
   );

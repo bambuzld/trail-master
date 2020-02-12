@@ -9,12 +9,10 @@ import {MainContext} from 'containers/mainContext'
 import { deleteItem } from 'utils/localStorage';
 
 const Logout = () => {
-  console.log('render logout')
   const [addNotification] = useNotification();
   const {dispatch} = useContext(MainContext)
 
   const logout = () => {
-  console.log('logout', logout);
 
     dispatch({ type: 'LOGIN_USER', payload: null });
     dispatch({ type: 'IS_LOGGED_IN', payload: false });

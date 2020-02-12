@@ -4,7 +4,6 @@ export const actions = {
 }
 
 export default function reducer(state, { type, payload }) {
-    console.log('payload id', payload);
     switch (type) {
       case "ADD_NOTIFICATION":
         return {

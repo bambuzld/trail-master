@@ -21,8 +21,6 @@ const Header = ({ hasTitle, hasAutocomplete, onBack }) => {
   const { width } = useWindowDimensions();
   const [isOpen, setOpen] = useState(false);
   const [isAuth, user] = useAuth();
-  console.log('isAuth', isAuth);
-  console.log('user', user);
 
   if (hasAutocomplete) {
     return (

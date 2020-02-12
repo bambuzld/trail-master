@@ -1,11 +1,21 @@
-import React, { useContext } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback
+} from 'react';
+
+import axios from 'axios';
+
 import { Formik, Field } from 'formik';
 import {
   FormControl,
   FormLabel,
   Input,
   FormErrorMessage,
-  Button
+  Button,
+  Select
 } from '@chakra-ui/core';
 
 import { MainContext } from 'containers/mainContext';
@@ -13,40 +23,105 @@ import { useNotification } from 'utils/useNotifications';
 import { useClient } from 'utils/Hooks';
 
 import { CREATE_PIN_MUTATION } from 'graphql/mutations';
+import { CREATE_TRAIL_MUTATION } from 'graphql/mutations';
 import { GET_PINS_QUERY } from 'graphql/queries';
+
+import getDistance from 'geolib/es/getDistance';
+
+const getTotalDistance = trailPath => {
+  let totalDistance = 0;
+  trailPath.forEach((coords, index) => {
+    if (index < trailPath.length - 1) {
+      totalDistance += getDistance(
+        { longitude: trailPath[index][0], latitude: trailPath[index][1] },
+        {
+          longitude: trailPath[index + 1][0],
+          latitude: trailPath[index + 1][1]
+        }
+      );
+    }
+  });
+  return totalDistance;
+};
+
+const getElevationDataForTrailPath = async locations => {
+  let parsedLocations = '';
+  locations.forEach((location, index) => {
+    if (index !== locations.length - 1) {
+      parsedLocations += `${location.latitude},${location.longitude}|`;
+    } else {
+      parsedLocations += `${location.latitude},${location.longitude}`;
+    }
+  });
+
+  try {
+    const elevationData = await axios.post(
+      `https://api.jawg.io/elevations/locations?access-token=FwOKqfwcdcw0hB5Qt5Kh5cB6DWmYOvOEX0NUORodEcWmRkWXMz7xgyhWlL5e8ktM`,
+      {
+        locations: parsedLocations
+      }
+    );
+    return elevationData.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const NewPinForm = ({ onClose }) => {
   const client = useClient();
   const {
-    map: { draftPin },
+    map: { draftPin, trailPath },
     dispatch
   } = useContext(MainContext);
-
   const [addNotification] = useNotification();
+  const [elevationData, setElevationData] = useState(null);
+  const [elevationDiff, setElevationDiff] = useState(null);
   const { longitude, latitude } = draftPin || {};
+
+  const totalDistance = useMemo(() => {
+    return getTotalDistance(trailPath);
+  }, [trailPath]);
+
+  useEffect(() => {
+    const locations = trailPath.map(point => ({
+      latitude: point[1],
+      longitude: point[0]
+    }));
+    getElevationDataForTrailPath(locations)
+      .then(result => {
+        setElevationData(result);
+        const firstPoint = result[0].elevation;
+        const lastPoint = result[result.length - 1].elevation;
+
+        setElevationDiff(Math.abs(lastPoint - firstPoint));
+      })
+      .catch(err => console.error(err));
+  }, []);
+  useEffect(() => {}, [trailPath]);
+
+  if (!elevationDiff) return null;
   return (
     <Formik
       initialValues={{
-        longitude,
-        latitude
+        length: totalDistance / 1000,
+        elevation: elevationDiff
       }}
       onSubmit={async (values, actions) => {
         try {
-          const { title, image, content, longitude, latitude } = values;
+          const { name, description,level,type } = values;
           const input = {
-            title,
-            image,
-            content,
-            latitude: parseFloat(latitude),
-            longitude: parseFloat(longitude)
+            name,
+            description,
+            level,
+            type,
+            path: trailPath,
+            elevation: elevationData.map(record=>record.elevation)
           };
-          await client.request(CREATE_PIN_MUTATION, input);
-          const pins = await client.request(GET_PINS_QUERY);
-          dispatch({ type: 'GET_PINS', payload: pins.getPins });
+          await client.request(CREATE_TRAIL_MUTATION, input);
           onClose();
           addNotification({
             status: 'success',
-            text: 'Pin added successfully',
+            text: 'Trail added successfully',
             duration: 3000
           });
           dispatch({
@@ -56,7 +131,7 @@ const NewPinForm = ({ onClose }) => {
         } catch (e) {
           addNotification({
             status: 'error',
-            text: 'There was a problem with adding pin',
+            text: 'There was a problem with adding the trail',
             duration: 3000
           });
           console.error(e);
@@ -65,76 +140,103 @@ const NewPinForm = ({ onClose }) => {
     >
       {props => (
         <form onSubmit={props.handleSubmit}>
-          <Field name="title">
+          <Field name="name">
             {({ field, form }) => (
-              <FormControl isInvalid={form.errors.title && form.touched.title}>
-                <FormLabel htmlFor="title">Pin title</FormLabel>
-                <Input {...field} id="title" placeholder="title" />
-                <FormErrorMessage>{form.errors.title}</FormErrorMessage>
+              <FormControl isInvalid={form.errors.name && form.touched.name}>
+                <FormLabel htmlFor="name">Name</FormLabel>
+                <Input {...field} id="name" placeholder="Add name" />
+                <FormErrorMessage>{form.errors.name}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
           <Field
-            name="content"
+            name="description"
             // validate={validateName}
           >
             {({ field, form }) => (
               <FormControl
-                isInvalid={form.errors.content && form.touched.content}
+                isInvalid={form.errors.description && form.touched.description}
               >
-                <FormLabel htmlFor="content">Content</FormLabel>
-                <Input {...field} id="content" placeholder="content" />
-                <FormErrorMessage>{form.errors.content}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field>
-          <Field
-            name="image"
-            // validate={validateName}
-          >
-            {({ field, form }) => (
-              <FormControl isInvalid={form.errors.image && form.touched.image}>
-                <FormLabel htmlFor="image">Pin Image</FormLabel>
-                <Input {...field} id="image" placeholder="image" />
-                <FormErrorMessage>{form.errors.image}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field>
-          <Field
-            name="latitude"
-            // validate={validateName}
-          >
-            {({ field, form }) => (
-              <FormControl
-                isInvalid={form.errors.latitude && form.touched.latitude}
-              >
-                <FormLabel htmlFor="latitude">Latitude</FormLabel>
+                <FormLabel htmlFor="description">Description</FormLabel>
                 <Input
                   {...field}
-                  id="latitude"
-                  placeholder="latitude"
-                  isDisabled={true}
+                  id="description"
+                  placeholder="Add description"
                 />
-                <FormErrorMessage>{form.errors.latitude}</FormErrorMessage>
+                <FormErrorMessage>{form.errors.description}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
           <Field
-            name="longitude"
+            name="level"
+            // validate={validateName}
+          >
+            {({ field, form }) => (
+              <FormControl isInvalid={form.errors.level && form.touched.level}>
+                <FormLabel htmlFor="image">Trail level</FormLabel>
+                {/* <Input {...field} id="level" placeholder="choose level" /> */}
+                <Select
+                  variant="filled"
+                  placeholder="Select level"
+                  {...field}
+                  id="level"
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="pro">Pro</option>
+                </Select>
+                <FormErrorMessage>{form.errors.level}</FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+          <Field
+            name="type"
+            // validate={validateName}
+          >
+            {({ field, form }) => (
+              <FormControl isInvalid={form.errors.type && form.touched.type}>
+                <FormLabel htmlFor="type">Trail type</FormLabel>
+                {/* <Input {...field} id="level" placeholder="choose level" /> */}
+                <Select
+                  variant="filled"
+                  placeholder="Select type"
+                  {...field}
+                  id="type"
+                >
+                  <option value="singletrack">Singletrack</option>
+                  <option value="forestroad">Forest Road</option>
+                  <option value="road">Road</option>
+                </Select>
+                <FormErrorMessage>{form.errors.level}</FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+
+          <Field
+            name="length"
             // validate={validateName}
           >
             {({ field, form }) => (
               <FormControl
-                isInvalid={form.errors.longitude && form.touched.longitude}
+                isInvalid={form.errors.length && form.touched.length}
               >
-                <FormLabel htmlFor="longitude">Longitude</FormLabel>
-                <Input
-                  {...field}
-                  id="longitude"
-                  placeholder="longitude"
-                  isDisabled={true}
-                />
-                <FormErrorMessage>{form.errors.longitude}</FormErrorMessage>
+                <FormLabel htmlFor="length">Trail length (km)</FormLabel>
+                <Input {...field} id="length" isDisabled />
+                <FormErrorMessage>{form.errors.length}</FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+          <Field
+            name="elevation"
+            // validate={validateName}
+          >
+            {({ field, form }) => (
+              <FormControl
+                isInvalid={form.errors.elevation && form.touched.elevation}
+              >
+                <FormLabel htmlFor="elevation">Elevation (m)</FormLabel>
+                <Input {...field} id="elevation" isDisabled />
+                <FormErrorMessage>{form.errors.elevation}</FormErrorMessage>
               </FormControl>
             )}
           </Field>

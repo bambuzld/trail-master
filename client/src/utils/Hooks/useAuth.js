@@ -15,7 +15,6 @@ export const useAuth = () => {
         dispatch({type: "IS_LOGGED_IN",payload: true })
     }
     const currentUser = get('currentUser')
-    console.log('currentUser', currentUser);
     if(currentUser){
         dispatch({type: "LOGIN_USER",payload: currentUser })
     }

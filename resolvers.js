@@ -1,5 +1,6 @@
 const { AuthenticationError } = require("apollo-server");
 const Pin = require('./models/Pin')
+const Trail = require('./models/Trail')
 
 
 
@@ -17,6 +18,10 @@ module.exports = {
     getPins: async (root,args,ctx)=>{
      const pins =  await Pin.find({}).populate('author').populate('comments.author')
      return pins
+    },
+    getTrails: async (root,args,ctx)=>{
+      const trails = await Trail.find({}).populate('author')
+      return trails
     }
   },
   Mutation: {
@@ -28,7 +33,15 @@ module.exports = {
 
       const pinAdded = await Pin.populate(newPin,'author')
       return pinAdded
-    }) 
+    }),
+    createTrail: async(root,args,ctx)=>{
+      const newTrail = await new Trail({
+        ...args.input,
+      }).save()
+
+      const trailAdded = await Trail.populate(newTrail, 'author')
+      return trailAdded
+    }
   },
   // Mutation: {
   //   createPin: async (root,args,ctx) => {
