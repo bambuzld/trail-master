@@ -4,5 +4,6 @@ export default {
     chosenLocationData: null,
     draftPin: null,
     pins: [],
+    trails: [],
     trailPath: []
 }

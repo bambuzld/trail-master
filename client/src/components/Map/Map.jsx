@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import ReactMapGL, {
-  NavigationControl,
-  Marker,
-  StaticMap,
-  Popup
-} from 'react-map-gl';
+import MapGL, { NavigationControl, Marker } from 'react-map-gl';
+import { Editor, EditorModes } from 'react-map-gl-draw';
+
 
 import { MainContext } from 'containers/mainContext';
-import { GET_PINS_QUERY } from 'graphql/queries';
+import { GET_TRAILS_QUERY } from 'graphql/queries';
 
 import PageLoader from 'components/PageLoader/PageLoader';
 import Svg from 'components/Svg';
@@ -19,8 +16,7 @@ import { Box, Button } from '@chakra-ui/core';
 import { useNotification } from 'utils/useNotifications';
 import { useClient, useAuth } from 'utils/Hooks';
 import { KeyCodes } from 'constants/keyCodes';
-
-import { Editor, EditorModes } from 'react-map-gl-draw';
+import { trailsDto } from 'utils/Dto/trailsDto';
 
 const MODES = [
   { id: EditorModes.EDITING, text: 'Select and Edit Feature' },
@@ -31,8 +27,6 @@ const MODES = [
 ];
 
 const DEFAULT_VIEWPORT = {
-  // width: 800,
-  // height: 600,
   longitude: 46,
   latitude: 15,
   zoom: 12
@@ -47,10 +41,9 @@ const Map = () => {
   const [showDrawer, setDrawer] = useState(false);
   const [user, isAuth] = useAuth();
   const [selectedMode, setSelectedMode] = useState(EditorModes.READ_ONLY);
-  const [trailPath,setTrailPath] = useState([])
+  const [trailPath, setTrailPath] = useState([]);
 
   const client = useClient();
-
 
   // const _switchMode = evt => {
   //   const selectedMode = evt.target.id;
@@ -71,18 +64,17 @@ const Map = () => {
   // );
 
   const {
-    map: { userPosition, chosenPosition, draftPin, pins },
+    map: { userPosition, chosenPosition, draftPin, trails },
     dispatch
   } = useContext(MainContext);
 
-
-  const onTrailPathUpdate  = e => {
-    const newCoordinates = e.data[0].geometry.coordinates
-    setTrailPath(newCoordinates)
-  }
+  const onTrailPathUpdate = e => {
+    const newCoordinates = e.data[0].geometry.coordinates;
+    setTrailPath(newCoordinates);
+  };
 
   const handleStartDrawing = () => {
-    setSelectedMode(EditorModes.DRAW_PATH)
+    setSelectedMode(EditorModes.DRAW_PATH);
     // setDrawer(true);
     setPop(false);
   };
@@ -105,12 +97,12 @@ const Map = () => {
 
   const getPins = useCallback(async () => {
     try {
-      const payload = await client.request(GET_PINS_QUERY);
-      dispatch({ type: 'GET_PINS', payload: payload.getPins });
+      const payload = await client.request(GET_TRAILS_QUERY);
+      dispatch({ type: 'GET_TRAILS', payload: trailsDto(payload.getTrails) });
     } catch {
       addNotification({
         status: 'error',
-        text: 'Server error, couldnt get Pins',
+        text: 'Server error, couldnt get the Trails',
         duration: 3000
       });
     }
@@ -118,11 +110,11 @@ const Map = () => {
 
   const handleFinishDrawing = e => {
     if (e.keyCode === KeyCodes.ESCAPE) {
-      dispatch({type: "SET_TRAIL_PATH",payload: trailPath})
-      setSelectedMode(EditorModes.READ_ONLY)
-      setDrawer(true)
+      dispatch({ type: 'SET_TRAIL_PATH', payload: trailPath });
+      setSelectedMode(EditorModes.READ_ONLY);
+      setDrawer(true);
     }
-  }
+  };
 
   useEffect(() => {
     getPins();
@@ -144,29 +136,37 @@ const Map = () => {
     }
     return () => {
       document.removeEventListener('keydown', handleFinishDrawing, false);
-  
     };
-  }, [userPosition, chosenPosition,trailPath]);
-
-  
+  }, [userPosition, chosenPosition, trailPath]);
 
   return (
     <>
       {loading && <PageLoader />}
-      <ReactMapGL
+      <MapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         width="100%"
         height="100%"
-        // mapStyle="mapbox://styles/mapbox/satellite-streets-v11" //satellite and streets view
-        mapStyle="mapbox://styles/mapbox/outdoors-v11"
+        mapStyle="mapbox://styles/mapbox/satellite-streets-v11" //satellite and streets view
+        // mapStyle="mapbox://styles/mapbox/outdoors-v11"
+        // mapStyle="mapbox://styles/mapbox/light-v9"
         {...viewport}
         onLoad={() => setLoading(false)}
-        onViewportChange={newViewport => setViewport(newViewport)}
+        onViewportChange={newViewport => {
+          setViewport(newViewport);
+          console.log('newViewport', newViewport);
+        }}
         onDblClick={handleMapClick}
         doubleClickZoom={false}
         //disable map when draft pin is present to prevent setting pin whereever user clicks on popover
       >
-        <Editor clickRadius={12} mode={selectedMode} onSelect={e=>console.log(e)} onUpdate={onTrailPathUpdate} />
+        <Editor
+          style={{ width: '100%', height: '100%' }}
+          clickRadius={12}
+          mode={selectedMode}
+          onSelect={e => console.log(e)}
+          onUpdate={onTrailPathUpdate}
+        />
+
         {/* {_renderToolbar()} */}
         <div style={{ position: 'absolute', bottom: 32, right: 100 }}>
           <NavigationControl />
@@ -188,59 +188,6 @@ const Map = () => {
             </Box>
           </Marker>
         )}
-
-        {/* {pins.length > 0 &&
-          pins.map(pin => (
-            <>
-              <Marker
-                latitude={pin.latitude}
-                longitude={pin.longitude}
-                offsetLeft={-19}
-                offsetTop={-37}
-                key={pin._id}
-              >
-                <Popover
-                  isOpen={trailInfoPopup[pin._id]}
-                  onClose={() =>
-                    setTrailInfoPopup({
-                      ...trailInfoPopup,
-                      [pin._id]: false
-                    })
-                  }
-                  headerText={pin.title}
-                  popoverTrigger={
-                    <Box
-                      w="1.5rem"
-                      h="1.5rem"
-                      onClick={() =>
-                        setTrailInfoPopup({
-                          ...trailInfoPopup,
-                          [pin._id]: true
-                        })
-                      }
-                      cursor="pointer"
-                    >
-                      <Svg icon="trail" />
-                    </Box>
-                  }
-                  popoverBody={
-                    <Box minW="64">
-                      <Box>{pin.content}</Box>
-                      <Button
-                        mt={4}
-                        type="submit"
-                        color="brandOrange"
-                        mr={4}
-                        onClick={() => setDrawer(true)}
-                      >
-                        Go to Trail
-                      </Button>
-                    </Box>
-                  }
-                />
-              </Marker>
-            </>
-          ))} */}
 
         {draftPin && !showDrawer && (
           <Marker
@@ -312,8 +259,12 @@ const Map = () => {
           </Marker>
         )}
 
-        <NewPinDrawer isOpen={showDrawer} onClose={() => setDrawer(false)} trailPath={trailPath} />
-      </ReactMapGL>
+        <NewPinDrawer
+          isOpen={showDrawer}
+          onClose={() => setDrawer(false)}
+          trailPath={trailPath}
+        />
+      </MapGL>
     </>
   );
 };

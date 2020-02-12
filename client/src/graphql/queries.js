@@ -19,3 +19,16 @@ export const GET_PINS_QUERY = `
     }
   }
 `
+export const GET_TRAILS_QUERY = `
+  {
+    getTrails {
+        _id
+        name
+        description
+        path
+        elevation
+        type
+        level
+    }
+  }
+`

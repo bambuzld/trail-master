@@ -42,6 +42,11 @@ export default function reducer(state, { type, payload }) {
           ...state,
           pins: payload 
         };
+      case "GET_TRAILS":
+        return {
+          ...state,
+          trails: payload 
+        };
         
       default:
         return state;
