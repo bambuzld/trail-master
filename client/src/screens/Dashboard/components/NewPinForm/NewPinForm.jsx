@@ -65,12 +65,6 @@ const getElevationDataForTrailPath = async locations => {
   }
 };
 
-
-
-
-
-
-
 const NewPinForm = ({ onClose }) => {
   const client = useClient();
   const {

@@ -29,6 +29,20 @@ export const GET_TRAILS_QUERY = `
         elevation
         type
         level
+        geoJson{
+          type
+          features{
+            id
+            type
+            properties{
+              name
+            }
+            geometry{
+              type
+              coordinates
+            }
+          }
+        }
     }
   }
 `
