@@ -32,6 +32,7 @@ module.exports = gql`
     length: String
     path: [[Float]]
     elevation: [Float]
+    level: String
   }
 
 
