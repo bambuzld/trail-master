@@ -1,11 +1,11 @@
-import { useState, useEffect,useContext } from 'react';
+import { useState, useEffect } from 'react';
 import {get} from 'utils/localStorage'
 
-import {MainContext} from 'containers/mainContext'
+import {useMainContext} from 'containers/mainContext'
 
 export const useAuth = () => {
   const [tokenId, setTokenId] = useState(null);
-  const {user: {isAuth, currentUser}, dispatch}  = useContext(MainContext)
+  const {user: {isAuth, currentUser}, dispatch}  = useMainContext()
   
 
   useEffect(() => {

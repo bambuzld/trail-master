@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Notification from 'components/Notification';
 
-import { MainContext } from 'containers/mainContext';
+import { useMainContext } from 'containers/mainContext';
 
 const Notifications = () => {
-  const { notifications: {notifications} } = useContext(MainContext);
+  const { notifications: {notifications} } = useMainContext();
   return (
     <>
       {notifications.length > 0 && notifications.map(notification => (

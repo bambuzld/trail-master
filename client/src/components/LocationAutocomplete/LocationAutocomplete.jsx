@@ -2,13 +2,12 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback,
-  useContext
+  useCallback
 } from 'react';
 import axios from 'axios';
 import Transition from 'react-transition-group/Transition';
 
-import { MainContext } from 'containers/mainContext';
+import { useMainContext } from 'containers/mainContext';
 
 import { KeyCodes } from 'constants/keyCodes';
 import { usePosition } from 'utils/Hooks';
@@ -22,7 +21,7 @@ const LocationAutocomplete = () => {
   const {
     dispatch,
     map: { chosenLocationData }
-  } = useContext(MainContext);
+  } = useMainContext();
   const [suggestions, setSuggestions] = useState(null);
   const [val, setVal] = useState('');
   const suggestionRef = useRef(null);

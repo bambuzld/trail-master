@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import MapGL, { NavigationControl, Marker, Source, Layer } from '@urbica/react-map-gl';
-// import 'mapbox-gl/dist/mapbox-gl.css';
-import Draw from '@urbica/react-map-gl-draw';
-// import 'mapbox-gl/dist/mapbox-gl.css';
-// import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { MainContext } from 'containers/mainContext';
+import MapGL, { NavigationControl, Marker, Source, Layer } from '@urbica/react-map-gl';
+import Draw from '@urbica/react-map-gl-draw';
+
+import { useMainContext } from 'containers/mainContext';
 import { GET_TRAILS_QUERY } from 'graphql/queries';
 
 import PageLoader from 'components/PageLoader/PageLoader';
@@ -43,7 +41,7 @@ const Map = () => {
   const {
     map: { userPosition, chosenPosition, draftPin, trails },
     dispatch
-  } = useContext(MainContext);
+  } = useMainContext();
 
   console.log('trails', trails);
   const onTrailPathFinish = e => {

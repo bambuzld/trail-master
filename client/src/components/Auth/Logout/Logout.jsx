@@ -1,16 +1,16 @@
-import React, { useContext, useCallback } from 'react';
+import React from 'react';
 import { GoogleLogout } from 'react-google-login';
 
 
 import { useNotification } from 'utils/useNotifications';
-import {MainContext} from 'containers/mainContext'
+import {useMainContext} from 'containers/mainContext'
 
 
 import { deleteItem } from 'utils/localStorage';
 
 const Logout = () => {
   const [addNotification] = useNotification();
-  const {dispatch} = useContext(MainContext)
+  const {dispatch} = useMainContext()
 
   const logout = () => {
 

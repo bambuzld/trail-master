@@ -1,5 +1,4 @@
 import React, {
-  useContext,
   useEffect,
   useState,
   useMemo,
@@ -18,7 +17,7 @@ import {
   Select
 } from '@chakra-ui/core';
 
-import { MainContext } from 'containers/mainContext';
+import { useMainContext } from 'containers/mainContext';
 import { useNotification } from 'utils/useNotifications';
 import { useClient } from 'utils/Hooks';
 
@@ -71,7 +70,7 @@ const NewPinForm = ({ onClose }) => {
   const {
     map: { draftPin, trail },
     dispatch
-  } = useContext(MainContext);
+  } = useMainContext();
   const [addNotification] = useNotification();
   const [elevationData, setElevationData] = useState(null);
   const [elevationDiff, setElevationDiff] = useState(null);

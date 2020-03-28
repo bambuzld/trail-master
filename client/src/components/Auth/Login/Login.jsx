@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { GraphQLClient } from 'graphql-request';
 
 import { ME_QUERY } from 'graphql/queries';
-import { MainContext } from 'containers/mainContext';
+import { useMainContext } from 'containers/mainContext';
 
 import { BASE_URL } from 'utils/Hooks/useClient';
 import { useNotification } from 'utils/useNotifications';
@@ -19,7 +19,7 @@ import { Button } from '@chakra-ui/core';
 
 
 const Login = ({ inPopup }) => {
-  const { dispatch } = useContext(MainContext);
+  const { dispatch } = useMainContext();
   const [addNotification] = useNotification();
 
   const onSuccess = async googleUser => {

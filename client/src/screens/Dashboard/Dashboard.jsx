@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { MainContext } from 'containers/mainContext';
 
 import './Dashboard.scss';
 import Header from 'components/Layout/Header';
@@ -9,12 +8,14 @@ import LocationAutocomplete from 'components/LocationAutocomplete';
 
 import { Text, Box } from '@chakra-ui/core';
 
+import {useMainContext} from 'containers/mainContext'
 
 const Dashboard = () => {
-  const {
-    dispatch,
-    map: { userPosition, chosenPosition }
-  } = useContext(MainContext);
+const {
+  map: { userPosition, chosenPosition },
+  dispatch
+} = useMainContext();  
+  
 
   const handleGoBack = () => {
     dispatch({

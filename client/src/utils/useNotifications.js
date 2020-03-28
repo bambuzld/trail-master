@@ -1,9 +1,9 @@
-import  { useContext, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-import { MainContext } from 'containers/mainContext';
+import {useMainContext } from 'containers/mainContext';
 
 export const useNotification = () => {
-  const { notifications: {notifications}, dispatch } = useContext(MainContext);
+  const { notifications: {notifications}, dispatch } = useMainContext();
   const [payload, setPayload] = useState(null);
   const addNotification = useCallback(pl => {
     setPayload(pl);

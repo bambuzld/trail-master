@@ -1,4 +1,4 @@
-import React,{ createContext, useReducer } from "react";
+import React,{ createContext, useReducer, useContext } from "react";
 
 import userContext from 'containers/User/User.context'
 import UserReducer, {key as userKey} from 'containers/User/User.reducer'
@@ -13,6 +13,10 @@ import combineReducer from 'utils/combineReducer'
 
 
 export const MainContext = createContext()
+
+export function useMainContext() {
+  return useContext(MainContext)
+}
 
 const MainProvider = ({children}) => {
   const initialValue = {
