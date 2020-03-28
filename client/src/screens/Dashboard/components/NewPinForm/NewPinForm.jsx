@@ -23,6 +23,7 @@ import { useNotification } from 'utils/useNotifications';
 import { useClient } from 'utils/Hooks';
 
 import { CREATE_TRAIL_MUTATION } from 'graphql/mutations';
+import { GET_TRAILS_QUERY } from 'graphql/queries';
 
 import getDistance from 'geolib/es/getDistance';
 
@@ -110,28 +111,30 @@ const NewPinForm = ({ onClose }) => {
       }}
       onSubmit={async (values, actions) => {
         try {
-          const { name, description,level,type } = values;
-          const input = {
-            name,
-            description,
-            level,
-            type,
-            path: trailPath,
-            elevation: elevationData.map(record=>record.elevation),
-            geoJson: trail
-          };
-          await client.request(CREATE_TRAIL_MUTATION, input);
-          onClose();
-          addNotification({
-            status: 'success',
-            text: 'Trail added successfully',
-            duration: 3000
-          });
-          dispatch({
-            type: 'UPDATE_DRAFT_PIN',
-            payload: null
-          });
-        } catch (e) {
+              const { name, description, level, type } = values;
+              const input = {
+                name,
+                description,
+                level,
+                type,
+                path: trailPath,
+                elevation: elevationData.map(record => record.elevation),
+                geoJson: trail
+              };
+              await client.request(CREATE_TRAIL_MUTATION, input);
+              onClose();
+              addNotification({
+                status: 'success',
+                text: 'Trail added successfully',
+                duration: 3000
+              });
+              dispatch({
+                type: 'UPDATE_DRAFT_PIN',
+                payload: null
+              });
+              const payload = await client.request(GET_TRAILS_QUERY);
+              dispatch({ type: 'GET_TRAILS', payload: payload.getTrails });
+            } catch (e) {
           addNotification({
             status: 'error',
             text: 'There was a problem with adding the trail',
